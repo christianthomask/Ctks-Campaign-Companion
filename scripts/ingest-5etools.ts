@@ -88,9 +88,18 @@ async function upsertBatch(
   rows: Record<string, unknown>[],
   batchSize = 100
 ): Promise<number> {
+  // Deduplicate by id within the batch — Postgres rejects duplicate keys in a single upsert
+  const seen = new Set<string>();
+  const deduped = rows.filter((row) => {
+    const id = String(row.id);
+    if (seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+
   let total = 0;
-  for (let i = 0; i < rows.length; i += batchSize) {
-    const batch = rows.slice(i, i + batchSize);
+  for (let i = 0; i < deduped.length; i += batchSize) {
+    const batch = deduped.slice(i, i + batchSize);
     const { error } = await supabase.from(table).upsert(batch, {
       onConflict: "id",
       ignoreDuplicates: false,
