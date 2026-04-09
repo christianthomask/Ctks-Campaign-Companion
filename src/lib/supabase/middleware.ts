@@ -1,20 +1,19 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { getSupabaseConfig } from "./config";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const { url, anonKey } = getSupabaseConfig();
 
-  if (!supabaseUrl || !supabaseKey) {
-    // Supabase not configured — pass through without auth
+  if (!url || !anonKey) {
     return supabaseResponse;
   }
 
   const supabase = createServerClient(
-    supabaseUrl,
-    supabaseKey,
+    url,
+    anonKey,
     {
       cookies: {
         getAll() {
@@ -33,7 +32,6 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // Refresh the auth session — important for Server Components
   await supabase.auth.getUser();
 
   return supabaseResponse;
