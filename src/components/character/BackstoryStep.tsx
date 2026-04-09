@@ -10,78 +10,125 @@ interface Props {
 }
 
 export function BackstoryStep({ draft, onUpdate, onNext, onBack }: Props) {
+  const canContinue = draft.name.trim().length > 0 && draft.book_donation.trim().length > 0;
+
   return (
-    <div>
-      <h2 className="mb-2 text-xl font-bold text-gray-100">Backstory & Details</h2>
-      <p className="mb-6 text-sm text-gray-400">Give your character a name and a story.</p>
-
-      <div className="space-y-5">
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
-            Character Name <span className="text-red-400">*</span>
-          </label>
-          <input
-            type="text"
-            value={draft.name}
-            onChange={(e) => onUpdate({ name: e.target.value })}
-            placeholder="What is your character called?"
-            className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-3 text-gray-100 placeholder-gray-500 focus:border-amber-500 focus:outline-none"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">Appearance</label>
-          <textarea
-            value={draft.appearance}
-            onChange={(e) => onUpdate({ appearance: e.target.value })}
-            rows={3}
-            placeholder="What does your character look like?"
-            className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 focus:border-amber-500 focus:outline-none"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">Backstory</label>
-          <textarea
-            value={draft.backstory}
-            onChange={(e) => onUpdate({ backstory: e.target.value })}
-            rows={4}
-            placeholder="Where does your character come from? What drives them?"
-            className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 focus:border-amber-500 focus:outline-none"
-          />
-        </div>
-
-        <div className="rounded-lg border border-amber-900/50 bg-amber-950/20 p-4">
-          <label className="block text-sm font-medium text-amber-400 mb-1">
-            Book Donation <span className="text-red-400">*</span>
-          </label>
-          <p className="mb-2 text-xs text-gray-400">
-            Every visitor to Candlekeep must donate a book to enter. What book is your character bringing, and why do they have it?
-          </p>
-          <textarea
-            value={draft.book_donation}
-            onChange={(e) => onUpdate({ book_donation: e.target.value })}
-            rows={3}
-            placeholder="A weathered journal of herbal remedies, inherited from my grandmother..."
-            className="w-full rounded-lg border border-amber-900/50 bg-gray-900 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 focus:border-amber-500 focus:outline-none"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">Motivation</label>
-          <textarea
-            value={draft.motivation}
-            onChange={(e) => onUpdate({ motivation: e.target.value })}
-            rows={2}
-            placeholder="Why is your character at Candlekeep? What are they seeking?"
-            className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 focus:border-amber-500 focus:outline-none"
-          />
-        </div>
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-amber-400">
+          Backstory &amp; Details
+        </h2>
+        <p className="mt-1 text-sm text-gray-400">
+          Give your character a name, a story, and a reason to be at Candlekeep.
+        </p>
       </div>
 
-      <div className="mt-8 flex justify-between">
-        <button onClick={onBack} className="rounded-lg bg-gray-800 px-6 py-3 text-sm font-medium text-gray-300 hover:bg-gray-700">Back</button>
-        <button onClick={onNext} disabled={!draft.name.trim() || !draft.book_donation.trim()} className="rounded-lg bg-amber-600 px-6 py-3 text-sm font-medium text-gray-950 hover:bg-amber-500 disabled:opacity-50">Continue</button>
+      {/* Name (required) */}
+      <div>
+        <label className="mb-1 block text-sm font-medium text-gray-300">
+          Character Name{" "}
+          <span className="text-red-400" aria-label="required">
+            *
+          </span>
+        </label>
+        <input
+          type="text"
+          value={draft.name}
+          onChange={(e) => onUpdate({ name: e.target.value })}
+          placeholder="What is your character called?"
+          className="min-h-[44px] w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2.5 text-base text-gray-100 placeholder-gray-600 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+        />
+        {!draft.name.trim() && (
+          <p className="mt-1 text-xs text-gray-600">
+            A name is required to finalize your character.
+          </p>
+        )}
+      </div>
+
+      {/* Appearance */}
+      <div>
+        <label className="mb-1 block text-sm font-medium text-gray-300">
+          Appearance
+        </label>
+        <textarea
+          value={draft.appearance}
+          onChange={(e) => onUpdate({ appearance: e.target.value })}
+          placeholder="What does your character look like? Height, build, distinguishing features, clothing..."
+          rows={3}
+          className="min-h-[44px] w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm text-gray-100 placeholder-gray-600 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+        />
+      </div>
+
+      {/* Backstory */}
+      <div>
+        <label className="mb-1 block text-sm font-medium text-gray-300">
+          Backstory
+        </label>
+        <textarea
+          value={draft.backstory}
+          onChange={(e) => onUpdate({ backstory: e.target.value })}
+          placeholder="Where does your character come from? What shaped them? What have they experienced?"
+          rows={5}
+          className="min-h-[44px] w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm text-gray-100 placeholder-gray-600 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+        />
+      </div>
+
+      {/* Book Donation (required, Candlekeep-specific) */}
+      <div className="rounded-xl border border-amber-600/30 bg-amber-950/20 p-4">
+        <label className="mb-1 block text-sm font-medium text-amber-400">
+          Book Donation{" "}
+          <span className="text-red-400" aria-label="required">
+            *
+          </span>
+        </label>
+        <p className="mb-2 text-xs text-gray-400">
+          Every visitor to Candlekeep must donate a written work not already in
+          the library&rsquo;s collection. What book, scroll, or manuscript is your
+          character bringing? Why do they have it?
+        </p>
+        <textarea
+          value={draft.book_donation}
+          onChange={(e) => onUpdate({ book_donation: e.target.value })}
+          placeholder="A weathered journal of herbal remedies, inherited from my grandmother who was a village healer..."
+          rows={3}
+          className="min-h-[44px] w-full rounded-lg border border-amber-900/50 bg-gray-800 px-4 py-2.5 text-sm text-gray-100 placeholder-gray-600 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+        />
+        {!draft.book_donation.trim() && (
+          <p className="mt-1 text-xs text-amber-600/70">
+            A book donation is required to enter Candlekeep.
+          </p>
+        )}
+      </div>
+
+      {/* Motivation */}
+      <div>
+        <label className="mb-1 block text-sm font-medium text-gray-300">
+          Motivation
+        </label>
+        <textarea
+          value={draft.motivation}
+          onChange={(e) => onUpdate({ motivation: e.target.value })}
+          placeholder="Why is your character traveling to Candlekeep? What knowledge do they seek?"
+          rows={3}
+          className="min-h-[44px] w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm text-gray-100 placeholder-gray-600 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+        />
+      </div>
+
+      {/* Navigation */}
+      <div className="flex items-center justify-between pt-4">
+        <button
+          onClick={onBack}
+          className="min-h-[44px] rounded-lg border border-gray-700 bg-gray-800 px-6 py-2.5 text-sm font-medium text-gray-300 transition-colors hover:bg-gray-700"
+        >
+          Back
+        </button>
+        <button
+          onClick={onNext}
+          disabled={!canContinue}
+          className="min-h-[44px] rounded-lg bg-amber-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Continue
+        </button>
       </div>
     </div>
   );
