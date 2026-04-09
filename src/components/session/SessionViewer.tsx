@@ -5,6 +5,7 @@ import type { SessionContent } from "@/lib/types/session";
 import { RoomBlock } from "./RoomBlock";
 import { SearchOverlay } from "./SearchOverlay";
 import { QuickReference } from "./QuickReference";
+import { VersionHistory } from "./VersionHistory";
 import { useSessionState } from "@/hooks/useSessionState";
 
 interface Props {
@@ -12,14 +13,20 @@ interface Props {
   content: SessionContent;
   title: string;
   subtitle: string | null;
+  currentVersion?: number;
 }
 
-export function SessionViewer({ sessionId, content, title, subtitle }: Props) {
+export function SessionViewer({ sessionId, content, title, subtitle, currentVersion = 1 }: Props) {
   const [showSearch, setShowSearch] = useState(false);
   const [showQuickRef, setShowQuickRef] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [viewingContent, setViewingContent] = useState<SessionContent | null>(null);
   const mainRef = useRef<HTMLDivElement>(null);
   const { puzzleEntries, togglePuzzle } = useSessionState(sessionId);
+
+  // The content to actually render — either an old version preview or the live content
+  const activeContent = viewingContent ?? content;
 
   // Keyboard shortcut for search
   useEffect(() => {
@@ -31,6 +38,7 @@ export function SessionViewer({ sessionId, content, title, subtitle }: Props) {
       if (e.key === "Escape") {
         setShowSearch(false);
         setShowQuickRef(false);
+        setShowHistory(false);
       }
     }
     window.addEventListener("keydown", handleKeyDown);
@@ -48,12 +56,12 @@ export function SessionViewer({ sessionId, content, title, subtitle }: Props) {
 
   // Build table of contents
   const toc = useMemo(() => {
-    return content.acts.map((act) => ({
+    return activeContent.acts.map((act) => ({
       id: act.id,
       title: act.title,
       sections: act.sections.map((s) => ({ id: s.id, title: s.title })),
     }));
-  }, [content.acts]);
+  }, [activeContent.acts]);
 
   function scrollToSection(sectionId: string) {
     const el = document.getElementById(sectionId);
@@ -96,8 +104,36 @@ export function SessionViewer({ sessionId, content, title, subtitle }: Props) {
               <path fillRule="evenodd" d="M6 4.75A.75.75 0 016.75 4h10.5a.75.75 0 010 1.5H6.75A.75.75 0 016 4.75zM6 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H6.75A.75.75 0 016 10zm0 5.25a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H6.75a.75.75 0 01-.75-.75zM1.99 4.75a1 1 0 011-1h.01a1 1 0 010 2h-.01a1 1 0 01-1-1zm0 5.25a1 1 0 011-1h.01a1 1 0 010 2h-.01a1 1 0 01-1-1zm0 5.25a1 1 0 011-1h.01a1 1 0 010 2h-.01a1 1 0 01-1-1z" clipRule="evenodd" />
             </svg>
           </button>
+          <button
+            onClick={() => setShowHistory(!showHistory)}
+            className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors ${
+              showHistory
+                ? "bg-amber-600 text-gray-950"
+                : "text-gray-400 hover:bg-gray-800 hover:text-gray-200"
+            }`}
+            aria-label="Version history"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clipRule="evenodd" />
+            </svg>
+          </button>
         </div>
       </header>
+
+      {/* Old version banner */}
+      {viewingContent && (
+        <div className="sticky top-[57px] z-25 flex items-center justify-between border-b border-amber-700/50 bg-amber-900/30 px-4 py-2 backdrop-blur-sm">
+          <p className="text-sm font-medium text-amber-400">
+            Viewing an older version — not the current version
+          </p>
+          <button
+            onClick={() => setViewingContent(null)}
+            className="rounded bg-gray-700 px-3 py-1 text-xs font-medium text-gray-200 transition-colors hover:bg-gray-600"
+          >
+            Back to current
+          </button>
+        </div>
+      )}
 
       <div className="flex">
         {/* Desktop sidebar TOC */}
@@ -137,24 +173,24 @@ export function SessionViewer({ sessionId, content, title, subtitle }: Props) {
             <div className="mx-auto max-w-3xl">
               <div className="flex flex-wrap gap-3 text-xs text-gray-400">
                 <span className="rounded bg-gray-800 px-2 py-1">
-                  Level {content.meta.level}
+                  Level {activeContent.meta.level}
                 </span>
                 <span className="rounded bg-gray-800 px-2 py-1">
-                  {content.meta.party_size}
+                  {activeContent.meta.party_size}
                 </span>
                 <span className="rounded bg-gray-800 px-2 py-1">
-                  {content.meta.estimated_duration}
+                  {activeContent.meta.estimated_duration}
                 </span>
               </div>
-              <p className="mt-3 text-sm text-gray-300">{content.meta.tone}</p>
+              <p className="mt-3 text-sm text-gray-300">{activeContent.meta.tone}</p>
               <p className="mt-1 text-sm font-medium text-red-400">
-                {content.meta.lethality}
+                {activeContent.meta.lethality}
               </p>
             </div>
           </div>
 
           {/* Acts and sections */}
-          {content.acts.map((act) => (
+          {activeContent.acts.map((act) => (
             <div key={act.id} id={act.id}>
               {/* Sticky act header */}
               <div className="sticky top-[57px] z-20 border-b border-gray-800 bg-gray-950/95 px-4 py-3 backdrop-blur-sm sm:px-6">
@@ -180,7 +216,7 @@ export function SessionViewer({ sessionId, content, title, subtitle }: Props) {
           ))}
 
           {/* Appendices */}
-          {content.appendices && content.appendices.length > 0 && (
+          {activeContent.appendices && activeContent.appendices.length > 0 && (
             <div id="appendices">
               <div className="sticky top-[57px] z-20 border-b border-gray-800 bg-gray-950/95 px-4 py-3 backdrop-blur-sm sm:px-6">
                 <div className="mx-auto max-w-3xl">
@@ -189,7 +225,7 @@ export function SessionViewer({ sessionId, content, title, subtitle }: Props) {
               </div>
               <div className="px-4 sm:px-6">
                 <div className="mx-auto max-w-3xl divide-y divide-gray-800/50">
-                  {content.appendices.map((appendix) => (
+                  {activeContent.appendices.map((appendix) => (
                     <div key={appendix.id} id={appendix.id} className="py-6">
                       <h3 className="mb-4 text-base font-semibold text-gray-100">
                         {appendix.title}
@@ -260,7 +296,7 @@ export function SessionViewer({ sessionId, content, title, subtitle }: Props) {
       {/* Search overlay */}
       {showSearch && (
         <SearchOverlay
-          content={content}
+          content={activeContent}
           onClose={() => setShowSearch(false)}
           onNavigate={scrollToSection}
         />
@@ -269,10 +305,22 @@ export function SessionViewer({ sessionId, content, title, subtitle }: Props) {
       {/* Quick reference */}
       {showQuickRef && (
         <QuickReference
-          quickRef={content.quick_reference}
+          quickRef={activeContent.quick_reference}
           puzzleEntries={puzzleEntries}
           onTogglePuzzle={togglePuzzle}
           onClose={() => setShowQuickRef(false)}
+        />
+      )}
+
+      {/* Version history panel */}
+      {showHistory && (
+        <VersionHistory
+          sessionId={sessionId}
+          currentVersion={currentVersion}
+          onClose={() => setShowHistory(false)}
+          onVersionSelect={(versionContent) => {
+            setViewingContent(versionContent);
+          }}
         />
       )}
     </div>

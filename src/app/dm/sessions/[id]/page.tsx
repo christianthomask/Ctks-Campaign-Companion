@@ -15,7 +15,7 @@ export default async function SessionPage({ params }: Props) {
 
   const { data: session } = await supabase
     .from("sessions")
-    .select("id, title, subtitle, session_number, content")
+    .select("id, title, subtitle, session_number, content, current_version")
     .eq("id", id)
     .single();
 
@@ -29,6 +29,7 @@ export default async function SessionPage({ params }: Props) {
       content={session.content as unknown as SessionContent}
       title={session.title}
       subtitle={session.subtitle}
+      currentVersion={(session as Record<string, unknown>).current_version as number | undefined}
     />
   );
 }
