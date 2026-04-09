@@ -1,13 +1,20 @@
 import type { NextConfig } from "next";
 
+// Bridge Vercel-Supabase integration env vars to NEXT_PUBLIC_ variants
+// so they're available in client-side code. Only sets them if the
+// NEXT_PUBLIC_ versions aren't already defined.
+const supabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
+const supabaseAnonKey =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_PUBLISHABLE_KEY ||
+  "";
+
 const nextConfig: NextConfig = {
-  // Expose SUPABASE_* env vars to the browser as NEXT_PUBLIC_ variants
-  // This bridges the Vercel-Supabase integration (which sets SUPABASE_*)
-  // with Next.js client-side code (which requires NEXT_PUBLIC_* prefix)
   env: {
-    NEXT_PUBLIC_SUPABASE_URL: process.env.SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY:
-      process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_SUPABASE_URL: supabaseUrl,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: supabaseAnonKey,
   },
 };
 
