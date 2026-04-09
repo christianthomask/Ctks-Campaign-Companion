@@ -176,11 +176,45 @@ export function ClassStep({ draft, onUpdate, onNext, onBack }: Props) {
         const supabase = createClient();
         const { data, error } = await supabase
           .from("ref_classes")
-          .select("id, name, hit_die, primary_abilities, flavor, complexity, archetype, skill_choices, skill_count")
+          .select("id, name, hit_die, primary_abilities, flavor_text, archetype, skill_choices")
           .order("name");
 
         if (!cancelled && data && data.length > 0 && !error) {
-          setClasses(data as ClassData[]);
+          // Normalize DB data to match the ClassData interface
+          const titleCase = (s: string) =>
+            s.split(" ").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+
+          const normalized = data.map((c: Record<string, unknown>) => {
+            const raw = c.skill_choices;
+            const skillChoices =
+              raw && typeof raw === "object" && !Array.isArray(raw)
+                ? (raw as { count?: number; from?: string[] })
+                : null;
+
+            // Find matching static class for fallback skill data
+            const staticMatch = STATIC_CLASSES.find(
+              (sc) => sc.id === c.id || sc.name === c.name
+            );
+
+            const fromArr = Array.isArray(skillChoices?.from)
+              ? skillChoices.from.map(titleCase)
+              : staticMatch?.skill_choices || [];
+
+            return {
+              id: c.id as string,
+              name: c.name as string,
+              hit_die: c.hit_die as number,
+              primary_abilities: Array.isArray(c.primary_abilities)
+                ? (c.primary_abilities as string[]).map((a: string) => a.toUpperCase()).join(", ")
+                : String(c.primary_abilities || ""),
+              flavor: String(c.flavor_text || ""),
+              complexity: 2,
+              archetype: (c.archetype as string) || "martial",
+              skill_choices: fromArr,
+              skill_count: skillChoices?.count || staticMatch?.skill_count || 2,
+            } as ClassData;
+          });
+          setClasses(normalized);
         }
       } catch {
         // Keep static fallback
@@ -199,9 +233,17 @@ export function ClassStep({ draft, onUpdate, onNext, onBack }: Props) {
   const filteredClasses = useMemo(() => {
     let result = classes;
 
-    // Filter by archetype
-    if (draft.archetype) {
-      result = result.filter((c) => c.archetype === draft.archetype);
+    // Map archetype concepts to class IDs they should include
+    const ARCHETYPE_CLASSES: Record<string, string[]> = {
+      martial: ["fighter", "barbarian", "monk", "paladin", "ranger"],
+      skill: ["rogue", "bard", "ranger"],
+      caster: ["wizard", "sorcerer", "warlock", "druid"],
+      hybrid: ["cleric", "paladin", "druid", "ranger"],
+    };
+
+    if (draft.archetype && ARCHETYPE_CLASSES[draft.archetype]) {
+      const allowed = ARCHETYPE_CLASSES[draft.archetype];
+      result = result.filter((c) => allowed.includes(c.id));
     }
 
     // Filter by search
