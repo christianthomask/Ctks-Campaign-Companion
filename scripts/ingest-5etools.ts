@@ -64,11 +64,23 @@ function slugify(text: string): string {
 
 async function fetchJson(url: string): Promise<unknown> {
   console.log(`  Fetching ${url.split("/data/")[1] || url}...`);
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+
+  // Try native fetch first, fall back to curl for restricted environments
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    return res.json();
+  } catch {
+    // Fallback: use curl via child_process
+    const { execSync } = await import("child_process");
+    const output = execSync(`curl -sL "${url}"`, {
+      maxBuffer: 10 * 1024 * 1024,
+      encoding: "utf-8",
+    });
+    return JSON.parse(output);
   }
-  return res.json();
 }
 
 async function upsertBatch(
