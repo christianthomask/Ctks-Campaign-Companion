@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { SessionViewer } from "@/components/session/SessionViewer";
 import type { SessionContent } from "@/lib/types/session";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ id: string }>;
 }
