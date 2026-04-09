@@ -128,15 +128,14 @@ export function computeCharacterStats(
   classData: ClassData | null,
   equippedItems: ItemData[]
 ): ComputedStats {
-  const bonuses = race?.ability_bonuses || {};
-
-  // Apply racial bonuses
-  const str = (character.str_base || 10) + (bonuses.str || 0);
-  const dex = (character.dex_base || 10) + (bonuses.dex || 0);
-  const con = (character.con_base || 10) + (bonuses.con || 0);
-  const int = (character.int_base || 10) + (bonuses.int || 0);
-  const wis = (character.wis_base || 10) + (bonuses.wis || 0);
-  const cha = (character.cha_base || 10) + (bonuses.cha || 0);
+  // 2024 rules: species no longer grant ability bonuses
+  // Ability scores are base values (already include background bonuses chosen by player)
+  const str = character.str_base || 10;
+  const dex = character.dex_base || 10;
+  const con = character.con_base || 10;
+  const int = character.int_base || 10;
+  const wis = character.wis_base || 10;
+  const cha = character.cha_base || 10;
 
   const scores: Record<string, number> = { str, dex, con, int, wis, cha };
   const mods: Record<string, number> = {};

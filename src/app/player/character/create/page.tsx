@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { WelcomeStep } from "@/components/character/WelcomeStep";
 import { ConceptStep } from "@/components/character/ConceptStep";
-import { RaceStep } from "@/components/character/RaceStep";
 import { ClassStep } from "@/components/character/ClassStep";
-import { AbilityScoresStep } from "@/components/character/AbilityScoresStep";
 import { BackgroundStep } from "@/components/character/BackgroundStep";
+import { SpeciesStep } from "@/components/character/SpeciesStep";
+import { AbilityScoresStep } from "@/components/character/AbilityScoresStep";
 import { EquipmentStep } from "@/components/character/EquipmentStep";
 import { SpellsStep } from "@/components/character/SpellsStep";
 import { BackstoryStep } from "@/components/character/BackstoryStep";
@@ -16,16 +16,34 @@ import { ReviewStep } from "@/components/character/ReviewStep";
 import { CharacterPreview } from "@/components/character/CharacterPreview";
 
 export interface CharacterDraft {
-  // Step 1-3
+  // Step 1: Concept
   archetype: string | null;
-  race_id: string | null;
-  race_name: string;
+
+  // Step 2: Class
   class_id: string | null;
   class_name: string;
   hit_die: number;
   skill_proficiencies: string[];
 
-  // Step 4
+  // Step 3: Background (2024: grants ability scores + origin feat)
+  background_id: string | null;
+  background_name: string;
+  personality_traits: string;
+  ideals: string;
+  bonds: string;
+  flaws: string;
+  background_ability_options: string[]; // 3 abilities the background offers
+  origin_feat: string;
+
+  // Step 4: Species (2024: no ability score bonuses)
+  species_id: string | null;
+  species_name: string;
+
+  // Legacy compatibility — keep race fields as aliases
+  race_id: string | null;
+  race_name: string;
+
+  // Step 5: Ability Scores
   str_base: number;
   dex_base: number;
   con_base: number;
@@ -34,22 +52,14 @@ export interface CharacterDraft {
   cha_base: number;
   ability_score_method: string;
 
-  // Step 5
-  background_id: string | null;
-  background_name: string;
-  personality_traits: string;
-  ideals: string;
-  bonds: string;
-  flaws: string;
-
-  // Step 6
+  // Step 6: Equipment
   equipment: Array<{ item_id: string; name: string; quantity: number; equipped: boolean }>;
 
-  // Step 7
+  // Step 7: Spells
   cantrips_known: string[];
   spells_known: string[];
 
-  // Step 8
+  // Step 8: Backstory
   name: string;
   appearance: string;
   backstory: string;
@@ -59,12 +69,22 @@ export interface CharacterDraft {
 
 const INITIAL_DRAFT: CharacterDraft = {
   archetype: null,
-  race_id: null,
-  race_name: "",
   class_id: null,
   class_name: "",
   hit_die: 8,
   skill_proficiencies: [],
+  background_id: null,
+  background_name: "",
+  personality_traits: "",
+  ideals: "",
+  bonds: "",
+  flaws: "",
+  background_ability_options: [],
+  origin_feat: "",
+  species_id: null,
+  species_name: "",
+  race_id: null,
+  race_name: "",
   str_base: 10,
   dex_base: 10,
   con_base: 10,
@@ -72,12 +92,6 @@ const INITIAL_DRAFT: CharacterDraft = {
   wis_base: 10,
   cha_base: 10,
   ability_score_method: "standard_array",
-  background_id: null,
-  background_name: "",
-  personality_traits: "",
-  ideals: "",
-  bonds: "",
-  flaws: "",
   equipment: [],
   cantrips_known: [],
   spells_known: [],
@@ -88,13 +102,14 @@ const INITIAL_DRAFT: CharacterDraft = {
   motivation: "",
 };
 
+// 2024 PHB order: Welcome → Concept → Class → Background → Species → Abilities → Equipment → Spells → Backstory → Review
 const STEP_NAMES = [
   "Welcome",
   "Concept",
-  "Race",
   "Class",
-  "Abilities",
   "Background",
+  "Species",
+  "Abilities",
   "Equipment",
   "Spells",
   "Backstory",
@@ -110,7 +125,15 @@ export default function CreateCharacterPage() {
 
   const updateDraft = useCallback(
     (updates: Partial<CharacterDraft>) => {
-      setDraft((prev) => ({ ...prev, ...updates }));
+      setDraft((prev) => {
+        const next = { ...prev, ...updates };
+        // Keep race/species fields in sync
+        if (updates.species_id !== undefined) next.race_id = updates.species_id;
+        if (updates.species_name !== undefined) next.race_name = updates.species_name;
+        if (updates.race_id !== undefined) next.species_id = updates.race_id;
+        if (updates.race_name !== undefined) next.species_name = updates.race_name;
+        return next;
+      });
     },
     []
   );
@@ -139,7 +162,6 @@ export default function CreateCharacterPage() {
       } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Get campaign
       const { data: membership } = await supabase
         .from("campaign_members")
         .select("campaign_id")
@@ -159,7 +181,7 @@ export default function CreateCharacterPage() {
         campaign_id: campaignId,
         name: draft.name || "Unnamed Hero",
         status: "complete",
-        race_id: draft.race_id,
+        species_id: draft.species_id,
         class_id: draft.class_id,
         background_id: draft.background_id,
         level: 1,
@@ -198,11 +220,11 @@ export default function CreateCharacterPage() {
     }
   }
 
-  // Determine if spells step should be shown
   const isCaster = ["wizard", "sorcerer", "warlock", "bard", "cleric", "druid", "paladin", "ranger"].includes(
     draft.class_id || ""
   );
 
+  // 2024 order: 0-Welcome, 1-Concept, 2-Class, 3-Background, 4-Species, 5-Abilities, 6-Equipment, 7-Spells, 8-Backstory, 9-Review
   const renderStep = () => {
     switch (step) {
       case 0:
@@ -210,13 +232,13 @@ export default function CreateCharacterPage() {
       case 1:
         return <ConceptStep draft={draft} onUpdate={updateDraft} onNext={nextStep} onBack={prevStep} />;
       case 2:
-        return <RaceStep draft={draft} onUpdate={updateDraft} onNext={nextStep} onBack={prevStep} />;
-      case 3:
         return <ClassStep draft={draft} onUpdate={updateDraft} onNext={nextStep} onBack={prevStep} />;
-      case 4:
-        return <AbilityScoresStep draft={draft} onUpdate={updateDraft} onNext={nextStep} onBack={prevStep} />;
-      case 5:
+      case 3:
         return <BackgroundStep draft={draft} onUpdate={updateDraft} onNext={nextStep} onBack={prevStep} />;
+      case 4:
+        return <SpeciesStep draft={draft} onUpdate={updateDraft} onNext={nextStep} onBack={prevStep} />;
+      case 5:
+        return <AbilityScoresStep draft={draft} onUpdate={updateDraft} onNext={nextStep} onBack={prevStep} />;
       case 6:
         return <EquipmentStep draft={draft} onUpdate={updateDraft} onNext={isCaster ? nextStep : () => goToStep(8)} onBack={prevStep} />;
       case 7:
@@ -247,7 +269,6 @@ export default function CreateCharacterPage() {
                 {showPreview ? "Hide" : "Show"} Preview
               </button>
             </div>
-            {/* Step indicators */}
             <div className="flex gap-1">
               {STEP_NAMES.map((name, i) => (
                 <button
@@ -272,12 +293,10 @@ export default function CreateCharacterPage() {
       </div>
 
       <div className="flex">
-        {/* Main content */}
         <main className="min-w-0 flex-1 px-4 py-6 sm:px-6">
           <div className="mx-auto max-w-2xl">{renderStep()}</div>
         </main>
 
-        {/* Desktop preview sidebar */}
         <aside className="hidden w-72 shrink-0 border-l border-gray-800 bg-gray-900 md:block">
           <div className="sticky top-[73px] max-h-[calc(100vh-73px)] overflow-y-auto p-4">
             <CharacterPreview draft={draft} />
@@ -285,7 +304,6 @@ export default function CreateCharacterPage() {
         </aside>
       </div>
 
-      {/* Mobile preview panel */}
       {showPreview && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/50" onClick={() => setShowPreview(false)} />
