@@ -11,22 +11,34 @@ export default async function Home() {
     } = await supabase.auth.getUser();
 
     if (user) {
+      // Check if profile exists
       const { data: profile } = await supabase
         .from("profiles")
-        .select("role")
+        .select("id, role")
         .eq("id", user.id)
         .single();
 
-      if (profile?.role === "dm") {
-        redirect("/dm/sessions");
-      } else if (profile) {
-        redirect("/player");
+      if (!profile) {
+        // Create profile — first user = DM
+        const { count } = await supabase
+          .from("profiles")
+          .select("*", { count: "exact", head: true });
+
+        const role = (count ?? 0) === 0 ? "dm" : "player";
+
+        await supabase.from("profiles").insert({
+          id: user.id,
+          display_name: user.email?.split("@")[0] || "Adventurer",
+          role,
+        });
+
+        redirect(role === "dm" ? "/dm/sessions" : "/player");
       }
+
+      redirect(profile.role === "dm" ? "/dm/sessions" : "/player");
     }
   } catch (e) {
-    // If it's a redirect, re-throw (Next.js uses thrown redirects)
     if (e instanceof Error && "digest" in e) throw e;
-    // Otherwise Supabase is misconfigured — fall through to login
   }
 
   redirect("/auth/login");

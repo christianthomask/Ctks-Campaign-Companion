@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 type Mode = "login" | "signup";
 
 export default function LoginPage() {
-  const [mode, setMode] = useState<Mode>("login");
+  const [mode, setMode] = useState<Mode>("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
@@ -34,7 +34,6 @@ export default function LoginPage() {
           return;
         }
 
-        // If email confirm is required, user won't have a session
         if (!data.session) {
           setStatus("error");
           setErrorMsg("Account created! Check your email to confirm, then sign in.");
@@ -54,47 +53,8 @@ export default function LoginPage() {
         }
       }
 
-      // We have a session — create profile if needed
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        setStatus("error");
-        setErrorMsg("Authentication succeeded but no user found. Try again.");
-        return;
-      }
-
-      const { data: existingProfile } = await supabase
-        .from("profiles")
-        .select("id, role")
-        .eq("id", user.id)
-        .single();
-
-      if (!existingProfile) {
-        // First user = DM, rest = player
-        const { count } = await supabase
-          .from("profiles")
-          .select("*", { count: "exact", head: true });
-
-        const role = (count ?? 0) === 0 ? "dm" : "player";
-
-        const { error: insertError } = await supabase.from("profiles").insert({
-          id: user.id,
-          display_name: user.email?.split("@")[0] || "Adventurer",
-          role,
-        });
-
-        if (insertError) {
-          console.error("Profile creation failed:", insertError);
-          // Still redirect — profile can be created later
-        }
-
-        router.push(role === "dm" ? "/dm/sessions" : "/player");
-      } else {
-        router.push(existingProfile.role === "dm" ? "/dm/sessions" : "/player");
-      }
-
+      // Auth succeeded — redirect to home, server will handle profile + routing
+      router.push("/");
       router.refresh();
     } catch (err) {
       console.error("Auth error:", err);
@@ -106,7 +66,6 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-full flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm">
-        {/* Logo / Title */}
         <div className="mb-10 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-amber-400">
             Campaign Companion
