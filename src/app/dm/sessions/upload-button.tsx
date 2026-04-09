@@ -36,7 +36,8 @@ export function UploadButton({ campaignId }: Props) {
 
       if (!res.ok) {
         setStatus("error");
-        setErrorMsg(data.error || "Upload failed");
+        const detail = data.details ? ` (${data.details})` : "";
+        setErrorMsg((data.error || "Upload failed") + detail);
         return;
       }
 
