@@ -22,14 +22,13 @@ export async function POST() {
     .single();
 
   if (!profile) {
-    const { count } = await supabase
-      .from("profiles")
-      .select("*", { count: "exact", head: true });
+    const { data: countResult } = await supabase.rpc("get_profile_count");
+    const profileCount = typeof countResult === "number" ? countResult : 0;
 
     await supabase.from("profiles").insert({
       id: user.id,
       display_name: user.email?.split("@")[0] || "Adventurer",
-      role: (count ?? 0) === 0 ? "dm" : "player",
+      role: profileCount === 0 ? "dm" : "player",
     });
   }
 
