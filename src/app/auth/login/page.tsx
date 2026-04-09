@@ -19,55 +19,52 @@ export default function LoginPage() {
     setStatus("loading");
     setErrorMsg("");
 
-    const supabase = createClient();
+    try {
+      const supabase = createClient();
 
-    if (mode === "signup") {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { display_name: email.split("@")[0] },
-        },
-      });
+      if (mode === "signup") {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
 
-      if (error) {
+        if (error) {
+          setStatus("error");
+          setErrorMsg(error.message);
+          return;
+        }
+
+        // If email confirm is required, user won't have a session
+        if (!data.session) {
+          setStatus("error");
+          setErrorMsg("Account created! Check your email to confirm, then sign in.");
+          setMode("login");
+          return;
+        }
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) {
+          setStatus("error");
+          setErrorMsg(error.message);
+          return;
+        }
+      }
+
+      // We have a session — create profile if needed
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
         setStatus("error");
-        setErrorMsg(error.message);
+        setErrorMsg("Authentication succeeded but no user found. Try again.");
         return;
       }
 
-      // Auto sign-in after signup (Supabase signs in immediately if email confirm is off)
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (signInError) {
-        // Might need email confirmation — show message
-        setStatus("error");
-        setErrorMsg("Account created! Check your email to confirm, then sign in.");
-        setMode("login");
-        return;
-      }
-    } else {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        setStatus("error");
-        setErrorMsg(error.message);
-        return;
-      }
-    }
-
-    // Signed in — create profile if needed, then redirect
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (user) {
       const { data: existingProfile } = await supabase
         .from("profiles")
         .select("id, role")
@@ -75,20 +72,23 @@ export default function LoginPage() {
         .single();
 
       if (!existingProfile) {
+        // First user = DM, rest = player
         const { count } = await supabase
           .from("profiles")
           .select("*", { count: "exact", head: true });
 
-        const role = count === 0 ? "dm" : "player";
+        const role = (count ?? 0) === 0 ? "dm" : "player";
 
-        await supabase.from("profiles").insert({
+        const { error: insertError } = await supabase.from("profiles").insert({
           id: user.id,
-          display_name:
-            user.user_metadata?.display_name ||
-            user.email?.split("@")[0] ||
-            "Adventurer",
+          display_name: user.email?.split("@")[0] || "Adventurer",
           role,
         });
+
+        if (insertError) {
+          console.error("Profile creation failed:", insertError);
+          // Still redirect — profile can be created later
+        }
 
         router.push(role === "dm" ? "/dm/sessions" : "/player");
       } else {
@@ -96,6 +96,10 @@ export default function LoginPage() {
       }
 
       router.refresh();
+    } catch (err) {
+      console.error("Auth error:", err);
+      setStatus("error");
+      setErrorMsg("Something went wrong. Please try again.");
     }
   }
 
@@ -171,7 +175,7 @@ export default function LoginPage() {
                 No account?{" "}
                 <button
                   type="button"
-                  onClick={() => { setMode("signup"); setErrorMsg(""); }}
+                  onClick={() => { setMode("signup"); setErrorMsg(""); setStatus("idle"); }}
                   className="text-amber-400 hover:text-amber-300"
                 >
                   Sign up
@@ -182,7 +186,7 @@ export default function LoginPage() {
                 Already have an account?{" "}
                 <button
                   type="button"
-                  onClick={() => { setMode("login"); setErrorMsg(""); }}
+                  onClick={() => { setMode("login"); setErrorMsg(""); setStatus("idle"); }}
                   className="text-amber-400 hover:text-amber-300"
                 >
                   Sign in
