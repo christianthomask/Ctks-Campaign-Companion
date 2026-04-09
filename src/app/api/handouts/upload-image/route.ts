@@ -68,32 +68,9 @@ export async function POST(request: Request) {
       .from("handout-images")
       .getPublicUrl(storagePath);
 
-    // Create handout record
-    const { data: handout, error: insertError } = await supabase
-      .from("handouts")
-      .insert({
-        campaign_id: campaignId,
-        title: title || file.name.replace(/\.[^.]+$/, ""),
-        content_type: "image",
-        content: "",
-        storage_path: urlData.publicUrl,
-        file_name: file.name,
-        stage: "draft",
-        category: "map",
-      })
-      .select("id")
-      .single();
-
-    if (insertError) {
-      return NextResponse.json(
-        { error: "Failed to create handout", details: insertError.message },
-        { status: 500 }
-      );
-    }
-
     return NextResponse.json({
-      handout_id: handout?.id,
-      storage_path: urlData.publicUrl,
+      storage_path: storagePath,
+      public_url: urlData.publicUrl,
       message: "Image uploaded successfully",
     });
   } catch (e) {
