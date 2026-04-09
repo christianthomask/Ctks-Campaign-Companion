@@ -1,0 +1,1019 @@
+{
+  "meta": {
+    "title": "Session 1",
+    "subtitle": "The Joy of Extradimensional Spaces",
+    "level": 1,
+    "party_size": "3-4 players",
+    "estimated_duration": "5+ hours",
+    "tone": "Whimsical & weird — magical curiosity cabinet with real teeth",
+    "lethality": "Gloves off — Matreous is dead when they find him. The mansion kills.",
+    "content_note": "All demonic/fiendish content reflavored to fey/arcane."
+  },
+  "quick_reference": {
+    "setting": {
+      "walls": "Gray stone, well-fitted",
+      "floors": "Dark hardwood, mostly carpeted in bedroom, study, trophy room, and dining room",
+      "doors": "Ironbound oak with brass fixtures. All unlocked unless noted.",
+      "light": "Warm oil lamps in most rooms. Windows look out on swirling indigo miasma.",
+      "miasma": "Going outside = 1 level of exhaustion per minute. Do not go outside.",
+      "atmosphere": "Well-maintained but empty. Like a house whose owner left decades ago. Dust on some surfaces, but magical servants keep things mostly tidy.",
+      "sound": "Eerie quiet broken by distant broom sweeping, cats meowing, kitchen clatter.",
+      "resting": "Party can long rest freely anywhere. No time pressure. No tracking threat.",
+      "ceilings": "10 feet throughout unless noted."
+    },
+    "npcs": [
+      { "name": "Gate Warden", "location": "Candlekeep gates", "voice": "Stern, deliberate, reverent toward books", "key_info": "Entry requirements" },
+      { "name": "Fembris", "location": "Candlekeep escort", "voice": "Rapid-fire tour guide, breathless enthusiasm", "key_info": "Candlekeep layout, Matreous's study location" },
+      { "name": "Matreous", "location": "M3 (dead)", "voice": "N/A — found dead", "key_info": "Research notes: 2 of 7 puzzle books found, 'literary term?'" },
+      { "name": "Cumin", "location": "M6 Kitchen", "voice": "Fussy, clipped, anxious butler", "key_info": "Mansion layout, puzzle books exist, warns about dining room and chained library" },
+      { "name": "Coriander", "location": "M6 Kitchen", "voice": "Warm, chatty, gossipy grandparent", "key_info": "Fistandia & Freyot's relationship, mansion history, 'the little giggling ones'" },
+      { "name": "Faerie Dragons", "location": "M9 Arboretum", "voice": "Squeaky, fast, overlapping, chaotic", "key_info": "Mansion layout (unhelpfully described), puzzle books (vaguely)" },
+      { "name": "The Cat", "location": "M5 Study → roams", "voice": "Silent. Judges. Meows for food.", "key_info": "Nothing. It's a cat. Players will love it." },
+      { "name": "The Flumph", "location": "M19 Menagerie", "voice": "Telepathic emotions only — warmth, gratitude", "key_info": "Nothing useful. Pure emotional support creature." },
+      { "name": "Keeper of Tomes", "location": "Act 3", "voice": "Slow, precise, quietly formidable", "key_info": "Campaign hook, the offer, the escalating pattern" }
+    ],
+    "puzzle_tracker": [
+      { "letter": "C", "room": "M9 — Arboretum shelf", "found": false },
+      { "letter": "H", "room": "M3 — Library reading desk", "found": false },
+      { "letter": "A", "room": "M5 — Study armchair", "found": false },
+      { "letter": "P", "room": "M8 — Parlor couch cushions", "found": false },
+      { "letter": "T", "room": "M11 — Laboratory table", "found": false },
+      { "letter": "E", "room": "M19 — Menagerie terrarium", "found": false },
+      { "letter": "R", "room": "M13 — Chained Library desk", "found": false }
+    ],
+    "treasure_summary": [
+      { "room": "M3", "item": "Jeweled letter opener", "value": "20 gp" },
+      { "room": "M3", "item": "Matreous's coin purse", "value": "15 gp, 22 sp" },
+      { "room": "M3", "item": "Wand (arcane focus)", "value": "Functional, nonmagical" },
+      { "room": "M3", "item": "Cold-iron figurine", "value": "Plot item" },
+      { "room": "M4", "item": "4 daggers, 4 quarterstaves, 20 darts", "value": "Equipment" },
+      { "room": "M10", "item": "Everflowing watering can", "value": "Minor magic item" },
+      { "room": "M10", "item": "Herbalism supplies", "value": "2 healer's kits worth" },
+      { "room": "M11", "item": "Alchemical ingredients", "value": "2 potions of healing (if brewed)" },
+      { "room": "M15", "item": "Silver hand mirror", "value": "25 gp" },
+      { "room": "M15", "item": "Gold earrings", "value": "25 gp" },
+      { "room": "M15", "item": "Moonstone ring", "value": "50 gp" },
+      { "room": "M15", "item": "Locket with portrait", "value": "Sentimental / plot" },
+      { "room": "M15", "item": "Locked chest contents", "value": "75 gp, 120 sp, Scroll of Comprehend Languages" },
+      { "room": "M16", "item": "Potion of healing", "value": "2d4+2 HP" },
+      { "room": "M17", "item": "Crystal prism", "value": "100 gp" }
+    ],
+    "exploration_flowchart": "UPPER FLOOR:\nM1 (Foyer) → M2 (Hallway) → Branch:\n  ├─ M3 (Library) ⚠️ ANIMATED BOOKS + MATREOUS BODY\n  ├─ M4 (Exercise Room) — broom, weapons\n  ├─ M5 (Study) ★ PUZZLE KEY — cat, journal, secret stairs down\n  ├─ M6 (Kitchen) ★ CUMIN & CORIANDER\n  ├─ M7 (Dining Room) ⚠️ MIMIC\n  ├─ M8 (Parlor) ⚠️ FLYING SWORDS\n  ├─ M9 (Arboretum) ★ FAERIE DRAGONS\n  └─ M10 (Greenhouse) — herbs, fire beetles\n\nLOWER LEVEL (via secret stairs in M5):\n  ├─ M11 (Laboratory) — binding circle, alchemy\n  ├─ M12 (Planetarium) ★ TELESCOPE PUZZLE → reveals M13\n  ├─ M13 (Chained Library) ⚠️ DEADLIEST ENCOUNTER\n  ├─ M14 (Storage) — supplies\n  ├─ M15 (Bedroom) — loot, lore\n  ├─ M16 (Bathroom) — potion, rest\n  ├─ M17 (Trophy Room) — cold iron cage, curiosities\n  ├─ M18 (Crawling Claw) — jump scare\n  └─ M19 (Menagerie) — specimens, flumph, toad"
+  },
+  "acts": [
+    {
+      "id": "act-1",
+      "title": "Act 1: Candlekeep Arrival",
+      "target_time": "~30 minutes",
+      "sections": [
+        {
+          "id": "scene-1-gates",
+          "title": "Scene 1: The Gates of Candlekeep",
+          "tags": ["candlekeep", "roleplay", "intro"],
+          "read_aloud": "The fortress-library of Candlekeep rises from the cliffs of the Sword Coast like a crown of pale stone towers, ancient beyond reckoning. The road ends at an enormous gate set into walls sixty feet high. Above the gate, carved into the stone in letters taller than a person, is a single word: CANDLEKEEP.\n\nA smaller door — still imposing — is set into the base of the gate. Beside it stands a robed figure flanked by two guards in polished armor. The figure regards your approach with the patient expression of someone who has watched a thousand travelers arrive and found most of them wanting.",
+          "description": "The Gate Warden evaluates each visitor's donated book. Every visitor must donate a written work of sufficient value — this is non-negotiable.",
+          "dm_notes": [
+            {
+              "type": "tip",
+              "title": "Icebreaker for Mixed Groups",
+              "content": "Use the book-donation as character introductions. Go around the table: 'What book did you bring as your entrance gift, and why do you have it?' This gets newer players talking in character immediately and gives veterans a chance to plant backstory hooks. Keep it brisk — 2-3 minutes per player max."
+            }
+          ],
+          "threats": [],
+          "interactions": [
+            { "action": "Present donated book", "check": "No check — the Warden evaluates quality", "result": "If the book is unique or interesting, entry is granted. The Warden rarely rejects travelers who've come this far." }
+          ],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": ["scene-2-tour"]
+        },
+        {
+          "id": "scene-2-tour",
+          "title": "Scene 2: The Quick Tour",
+          "tags": ["candlekeep", "roleplay", "lore"],
+          "read_aloud": null,
+          "description": "Fembris rattles off key locations as they walk through the Court of Air. Don't linger — the point is to establish Candlekeep as a place with depth they'll want to return to later. Fembris walks fast and talks faster.",
+          "dm_notes": [
+            {
+              "type": "lore",
+              "title": "Candlekeep at a Glance",
+              "content": "The Emerald Door: Main entrance to the inner library. Glows faintly with protective magic.\nThe Court of Air: Open courtyard surrounded by towers. Scholars, monks, and seekers everywhere.\nThe Hearth: The fortress tavern. Surprisingly cozy. Good ale, odd patrons.\nThe House of Rest: Guest quarters. Comfortable but modest.\nThe Pillars of Pedagogy: Where study rooms are assigned. This is where Matreous works.\nThe Great Library: The real treasure. Miles of shelves. They'll get a glimpse but won't enter today."
+            },
+            {
+              "type": "tip",
+              "title": "Future Hook Seasoning",
+              "content": "As they walk, describe a side corridor with a door that pulses with faint blue light. Fembris hurries past without comment. If asked: 'Oh, that? I'm not sure, actually. It's been doing that for a few weeks. The senior Avowed are looking into it.' No payoff today. Pure future-hook."
+            }
+          ],
+          "threats": [],
+          "interactions": [],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": ["scene-3-hook"]
+        },
+        {
+          "id": "scene-3-hook",
+          "title": "Scene 3: The Hook — Matreous Is Missing",
+          "tags": ["candlekeep", "hook", "puzzle"],
+          "read_aloud": null,
+          "description": "Fembris leads them to the Pillars of Pedagogy and up to Matreous's study room. The room is empty. His belongings are scattered. On the desk: an open book — The Joy of Extradimensional Spaces.",
+          "dm_notes": [
+            {
+              "type": "tip",
+              "title": "Opening the Portal",
+              "content": "When 'scepter' is spoken, shimmering translucent double doors appear in the air. They're already beginning to fade. The party has a few minutes to decide — step through or lose the portal. (They can re-open it by speaking 'scepter' again, but they don't know that.) Fembris stays behind: 'I'll, ah... I'll be right here. When you come back. With Matreous. Hopefully.'"
+            }
+          ],
+          "threats": [],
+          "interactions": [
+            { "action": "Examine the book", "check": null, "result": "A treatise on extradimensional spaces and Mordenkainen's magnificent mansion. Fistandia's margin notes detail how she created a permanent version of the spell." },
+            { "action": "Decipher margin notes", "check": "Arcana DC 13", "result": "Find the command word 'scepter' that activates the entrance portal." },
+            { "action": "Cast Detect Magic", "check": null, "result": "Faint conjuration magic permeates the room, concentrated near the desk. Residue of a recent portal." },
+            { "action": "Search room further", "check": null, "result": "Matreous's journal: he found the portal by casting Detect Magic. Last entry: 'The command word is scepter. Going in to investigate. Should be back by supper.' He wasn't." },
+            { "action": "If nobody makes the Arcana check", "check": null, "result": "An Avowed scholar named Teles can help translate. Don't let this stall." }
+          ],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": ["m1-foyer"]
+        }
+      ]
+    },
+    {
+      "id": "act-2",
+      "title": "Act 2: The Mansion",
+      "target_time": "~3.5 hours",
+      "sections": [
+        {
+          "id": "m1-foyer",
+          "title": "M1. Foyer",
+          "tags": ["upper-floor", "exploration", "puzzle-hint"],
+          "read_aloud": "You step through the shimmering portal into a stone-walled foyer. The air is cool and still. Oil lamps in brass sconces cast warm light across dark hardwood floors. A large stone archway dominates the far wall — its surface is carved with intricate knotwork patterns, but it's inert, just stone. Above the arch, a decorative plaque is mounted to the wall.\n\nTwo wooden doors lead deeper into the mansion, one to the left and one to the right. A hallway extends straight ahead.\n\nBehind you, the translucent portal doors flicker — and wink out. The connection to Candlekeep is gone.",
+          "description": "The foyer is the entry and exit point. The archway is the exit portal frame — currently inert. The plaque above it reads: 'The First Chapter of Wisdom is the Admission of Ignorance.' This is a puzzle hint — don't draw attention to it.",
+          "dm_notes": [
+            {
+              "type": "tip",
+              "content": "Make the portal closing feel final. The fading light, the silence that follows. The party is sealed in. Their only way out is forward."
+            }
+          ],
+          "threats": [],
+          "interactions": [
+            { "action": "Examine the archway", "check": "Arcana DC 14", "result": "Dormant conjuration magic — designed to create a portal but requires a command word to activate." },
+            { "action": "Read the plaque", "check": null, "result": "'The First Chapter of Wisdom is the Admission of Ignorance.' Decorative. (Puzzle hint.)" }
+          ],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": ["m2-hallway"]
+        },
+        {
+          "id": "m2-hallway",
+          "title": "M2. Hallway",
+          "tags": ["upper-floor", "transition"],
+          "read_aloud": "A long hallway stretches ahead, connecting the foyer to several doors. Oil lamps in wall sconces provide warm but inconsistent light — some flicker, one or two have burned out entirely, leaving pools of shadow. The hardwood floor creaks underfoot. You can hear something from deeper in the house — a faint, rhythmic sound. Like sweeping.",
+          "description": "Transition space connecting to all upper floor rooms. The sweeping sound comes from M4 (the broom). Faint kitchen clatter from M6 if players listen.",
+          "dm_notes": [],
+          "threats": [],
+          "interactions": [],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": ["m3-library", "m4-exercise-room", "m5-study", "m6-kitchen", "m7-dining-room", "m8-parlor", "m9-arboretum"]
+        },
+        {
+          "id": "m3-library",
+          "title": "M3. Library",
+          "tags": ["upper-floor", "combat", "high-danger", "puzzle-book", "matreous"],
+          "read_aloud": "This room is enormous — easily the largest you've seen so far. Floor-to-ceiling bookshelves line every wall, and additional freestanding shelf units divide the room into narrow aisles. Books are everywhere — thousands of them — stacked on shelves, piled on reading desks, heaped in corners. The smell of old paper and leather is overwhelming.\n\nA heavy wooden reading desk sits near the center, and beside it, something that stops you cold: a figure is pinned beneath a toppled bookshelf. Motionless. A dark stain has spread across the floor beneath them.",
+          "description": "Matreous is dead — an older human male in scholar's robes, pinned under a toppled bookshelf. Deep lacerations from paper cuts scaled to lethal size, heavy bruising from blunt impacts. Dead roughly one day. This is the lethality signpost.",
+          "dm_notes": [
+            {
+              "type": "warning",
+              "title": "Lethality Signpost",
+              "content": "Describe this with enough weight that players understand: this place killed a grown man, and it can kill them too. Matter-of-fact horror is more effective than gore."
+            },
+            {
+              "type": "tip",
+              "title": "Combat Notes — Swarm of Animated Books",
+              "content": "Damage resistance makes the swarm feel tanky. Fire vulnerability is the key — a torch, Fire Bolt, or lit oil flask will shred it. The real danger is the bookshelf trap + swarm combo. A restrained PC getting slammed every round is an ugly spiral. A character pinned under a shelf next to Matreous's body is visceral."
+            }
+          ],
+          "threats": [
+            {
+              "name": "Swarm of Animated Books",
+              "trigger": "Activates when characters move deeper into the room or begin searching shelves",
+              "behavior": "Attacks anyone in the library. Cannot be reasoned with. As it attacks, it knocks a 10-foot-wide freestanding bookshelf onto nearby characters.",
+              "combat_notes": "Fire vulnerability is the key. Bookshelf trap (DC 15 Dex save or knocked prone and restrained, DC 15 Athletics to escape) is the real danger combined with the swarm's attacks.",
+              "stat_block": {
+                "name": "Swarm of Animated Books",
+                "ac": 12,
+                "ac_note": "natural armor",
+                "hp": 22,
+                "hp_formula": "5d8",
+                "speed": "0 ft., fly 30 ft. (hover)",
+                "cr": "1/2",
+                "attacks": [
+                  { "name": "Slam", "to_hit": 3, "reach": "0 ft. (swarm space)", "damage": "2d6", "damage_type": "bludgeoning", "effects": null }
+                ],
+                "special_abilities": [
+                  { "name": "False Appearance", "description": "Indistinguishable from a normal pile of books when motionless." },
+                  { "name": "Swarm", "description": "Can occupy another creature's space and vice versa. Can't regain HP." }
+                ],
+                "damage_vulnerabilities": ["fire"],
+                "damage_resistances": ["bludgeoning", "piercing", "slashing"],
+                "damage_immunities": [],
+                "condition_immunities": ["charmed", "frightened", "grappled", "paralyzed", "petrified", "prone", "restrained", "stunned"]
+              }
+            }
+          ],
+          "interactions": [
+            { "action": "Search Matreous's body", "check": null, "result": "Research notes (2 of 7 letters found — H and A, 'literary term?'), coin purse (15 gp, 22 sp), wand (arcane focus, nonmagical), small cold-iron figurine with cracked binding runes." },
+            { "action": "Examine the figurine", "check": "Investigation DC 15 or Arcana DC 13", "result": "Hairline cracks, damaged binding runes — whatever was sealed inside has escaped or could escape." },
+            { "action": "Lift the fallen bookshelf", "check": "Strength (Athletics) DC 15", "result": "Frees anyone pinned beneath it." },
+            { "action": "Search shelves (10 minutes)", "check": null, "result": "Books on arcane subjects — extraplanar theory, fey ecology, conjuration, permanency magic. Establishes Fistandia's broad interests." }
+          ],
+          "treasure": [
+            { "room": "M3", "item": "Jeweled letter opener (functions as dagger)", "value": "20 gp" },
+            { "room": "M3", "item": "Matreous's coin purse", "value": "15 gp, 22 sp" },
+            { "room": "M3", "item": "Wand (arcane focus)", "value": "Functional, nonmagical" },
+            { "room": "M3", "item": "Cold-iron figurine", "value": "Plot item (Mischief Sprite prison)" }
+          ],
+          "puzzle_book": {
+            "letter": "H",
+            "location_description": "On the reading desk, near the jeweled letter opener",
+            "discovery": "Passive Perception 12+ notices the gilded spine, or a thorough search (5 min) finds it.",
+            "illustration": "A cozy study with a cat curled on an armchair."
+          },
+          "connections": ["m2-hallway"]
+        },
+        {
+          "id": "m4-exercise-room",
+          "title": "M4. Exercise Room",
+          "tags": ["upper-floor", "exploration", "comedy"],
+          "read_aloud": "A training room. Indigo-tinted light streams through a window overlooking the swirling miasma outside. A battered wooden mannequin stands in the center, scarred from years of use. A weapon rack along one wall holds an assortment of staffs and daggers. And in the corner, sweeping the floor with mechanical devotion, is a broom. Just... sweeping. Back and forth. It has apparently been doing this for a very long time.",
+          "description": "The broom is harmless unless interfered with. The mannequin swings back if struck (1d4 auto-damage, comedic). Equipment room useful for under-equipped level 1 PCs.",
+          "dm_notes": [
+            {
+              "type": "tip",
+              "content": "The broom is pure comedy — it dodges around fighters, whacks grabby hands, and returns to sweeping once left alone. Good breather after M3."
+            }
+          ],
+          "threats": [
+            {
+              "name": "Animated Broom (only if provoked)",
+              "trigger": "Someone tries to grab, stop, or remove the broom from the room",
+              "behavior": "Attacks only if interfered with. Returns to sweeping once left alone. Will not pursue beyond M4.",
+              "combat_notes": "AC 15 is annoying but only 17 HP. Not worth fighting — just leave it alone.",
+              "stat_block": {
+                "name": "Animated Broom",
+                "ac": 15,
+                "ac_note": "natural armor",
+                "hp": 17,
+                "hp_formula": "5d6",
+                "speed": "0 ft., fly 50 ft. (hover)",
+                "cr": "1/4",
+                "attacks": [
+                  { "name": "Slam", "to_hit": 4, "reach": "5 ft.", "damage": "1d6+1", "damage_type": "bludgeoning", "effects": null }
+                ],
+                "special_abilities": [
+                  { "name": "Antimagic Susceptibility", "description": "Incapacitated in antimagic field. Dispel Magic (DC 14) destroys it." }
+                ],
+                "damage_vulnerabilities": [],
+                "damage_resistances": [],
+                "damage_immunities": ["poison", "psychic"],
+                "condition_immunities": ["blinded", "charmed", "deafened", "frightened", "paralyzed", "petrified", "poisoned"]
+              }
+            }
+          ],
+          "interactions": [],
+          "treasure": [
+            { "room": "M4", "item": "4 daggers", "value": "Equipment (1d4 piercing, finesse, light, thrown 20/60)" },
+            { "room": "M4", "item": "4 quarterstaves", "value": "Equipment (1d6 bludgeoning, versatile 1d8)" },
+            { "room": "M4", "item": "20 darts", "value": "Equipment (1d4 piercing, finesse, thrown 20/60)" }
+          ],
+          "puzzle_book": null,
+          "connections": ["m2-hallway"]
+        },
+        {
+          "id": "m5-study",
+          "title": "M5. Study ★ KEY ROOM",
+          "tags": ["upper-floor", "puzzle-key", "roleplay", "puzzle-book", "secret-door"],
+          "read_aloud": "A warm, book-lined room that feels more personal than the library. Two overstuffed armchairs flank a cold fireplace. Shelves packed with volumes line the walls — you notice almost every spine bears the same author's name: Fistandia. A writing desk sits beneath the window, cluttered with journals and correspondence.\n\nA fluffy black cat is curled up on one of the armchairs. It raises its head when you enter, regards you with enormous green eyes, and meows. Once. Plaintively.",
+          "description": "The puzzle keystone room. The cat befriends easily (Animal Handling DC 10 or just feed it). 30 minutes of searching reveals Fistandia's identity, the mansion's origin, and the puzzle explanation. The journal hint ('every journey through knowledge must begin with one of these') is the meta-clue for CHAPTER.",
+          "dm_notes": [
+            {
+              "type": "tip",
+              "title": "The Puzzle Clicks Here",
+              "content": "This is the room where the puzzle makes sense. Make the journal discovery feel significant — not exposition, but a moment of 'oh, so THAT'S what we need to do.' If players browse randomly, have the cat paw at the journal to draw attention."
+            },
+            {
+              "type": "lore",
+              "title": "What the Study Reveals",
+              "content": "1. Fistandia was a powerful mage devoted to Mystra.\n2. Mystra granted her a permanent extradimensional mansion.\n3. She feared guests might get trapped, so she hid the exit command word on the spines of seven identical gilded books.\n4. Journal hint: 'Should any visitor find themselves sealed within these walls, take heart. I have scattered the key across seven verses, each bearing a single gilded truth upon its spine. Gather them, arrange them rightly, and speak the word aloud within ten paces of the foyer arch. Remember: every journey through knowledge must begin with one of these.'\n5. Fistandia had a partner named Freyot, also a mage. They left together.\n6. Fistandia researched fey binding techniques — several volumes on Feywild creatures."
+            },
+            {
+              "type": "tip",
+              "title": "Secret Door",
+              "content": "Investigation DC 10 finds a well-used book on the bottom-left shelf. Pulling it slides the bookcase forward, revealing stairs to the lower level (M14-M19). If nobody searches, have the cat paw at the bookcase."
+            }
+          ],
+          "threats": [],
+          "interactions": [
+            { "action": "Befriend the cat", "check": "Animal Handling DC 10 (or just feed/pet it)", "result": "Cat follows the party for the rest of the adventure. Purrs loudly." },
+            { "action": "Search the room (30 min)", "check": null, "result": "Full lore discovery — Fistandia's identity, mansion origin, puzzle explanation, journal hint." },
+            { "action": "Find the secret door", "check": "Investigation DC 10", "result": "Bookcase slides forward, revealing staircase down to lower level." }
+          ],
+          "treasure": [],
+          "puzzle_book": {
+            "letter": "A",
+            "location_description": "Sitting on one of the armchairs (not the cat's chair)",
+            "discovery": "Visible when examining the furniture.",
+            "illustration": "A kitchen with two small figures standing at a counter."
+          },
+          "connections": ["m2-hallway", "m6-kitchen", "m14-storage"]
+        },
+        {
+          "id": "m6-kitchen",
+          "title": "M6. Kitchen ★ BEST RP ENCOUNTER",
+          "tags": ["upper-floor", "roleplay", "key-npc"],
+          "read_aloud": "The smell hits you first — something is cooking. Herbs hang in bundles from the ceiling. Copper pots bubble on a cast-iron stove. Shelves are stacked with jars of preserved ingredients, some recognizable, some decidedly not. And in the middle of it all, two tiny creatures — no taller than a human forearm — are bustling about with intense focus. One is arranging herbs with fussy precision. The other is stirring a pot and humming.\n\nThey haven't noticed you yet.",
+          "description": "Cumin and Coriander are homunculi — tiny, winged, clay-like servants created by Fistandia and Freyot respectively. They are noncombatants, will flee if attacked, and are the emotional heart of the session.",
+          "dm_notes": [
+            {
+              "type": "rp_guidance",
+              "title": "Play These Two Hard",
+              "content": "Give Cumin and Coriander 10-15 minutes if players are engaged. Have them bicker about food prep. Have them offer terrible magical snacks. Have Cumin fret about messes. Have Coriander gossip about nothing. If the party mentions the cat: 'Oh! You found the kitty! She must be so hungry. She won't eat our food. Very rude.'"
+            },
+            {
+              "type": "lore",
+              "title": "Fistandia & Freyot Are Alive",
+              "content": "A homunculus dies when its master dies. Two living homunculi = both masters alive. Arcana DC 12 confirms this rule. This is a campaign thread — leave it dangling."
+            }
+          ],
+          "threats": [
+            {
+              "name": "Cumin & Coriander (Homunculi)",
+              "trigger": null,
+              "behavior": "Noncombatants. Flee and hide if attacked, whimpering.",
+              "combat_notes": "Do not fight. 5 HP each. If a player attacks them, the other NPCs in the mansion (faerie dragons) will be hostile.",
+              "stat_block": {
+                "name": "Homunculus (Cumin / Coriander)",
+                "ac": 13,
+                "ac_note": "natural armor",
+                "hp": 5,
+                "hp_formula": "2d4",
+                "speed": "20 ft., fly 40 ft.",
+                "cr": "0",
+                "attacks": [
+                  { "name": "Bite", "to_hit": 4, "reach": "5 ft.", "damage": "1", "damage_type": "piercing", "effects": "Plus DC 10 Con save or poisoned 1 minute (but they won't fight)" }
+                ],
+                "special_abilities": [
+                  { "name": "Telepathic Bond", "description": "Can communicate telepathically with its creator up to 1 mile away." }
+                ],
+                "damage_vulnerabilities": [],
+                "damage_resistances": [],
+                "damage_immunities": ["poison"],
+                "condition_immunities": ["charmed", "poisoned"]
+              }
+            }
+          ],
+          "interactions": [
+            { "action": "Ask about the mansion", "check": null, "result": "They know the layout and can describe any room. Happy to share." },
+            { "action": "Ask about Fistandia & Freyot", "check": null, "result": "'They lived here together. They left some time ago. We maintain everything until they return.' No sense of how long." },
+            { "action": "Ask about the puzzle books", "check": null, "result": "'The gilded-spine books? Mistress Fistandia placed those everywhere. She said they were the key to going home. We weren't to move them.'" },
+            { "action": "Ask about danger", "check": null, "result": "Cumin: 'We don't go in the dining room anymore. The seventh chair is wrong.' Coriander: 'And don't touch the chains downstairs.'" },
+            { "action": "Ask about the arboretum", "check": null, "result": "Coriander: 'The little giggling ones are still in there! Harmless, mostly. They like pranks.'" },
+            { "action": "Ask about Matreous", "check": null, "result": "If told about his death: genuine distress. 'The human who came through? He ran into the library and we heard terrible sounds...' They hid and didn't investigate." }
+          ],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": ["m5-study", "m7-dining-room"]
+        },
+        {
+          "id": "m7-dining-room",
+          "title": "M7. Dining Room ★ HIGH DANGER",
+          "tags": ["upper-floor", "combat", "high-danger"],
+          "read_aloud": "An elegant dining room. A crystal chandelier hangs from the ceiling above a long table of dark polished wood. Six matching wooden chairs with scarlet cushions are arranged around the table. Unremarkable tapestries depicting grapevines and winemaking line the walls.\n\nA seventh chair — identical to the others — sits alone in the far corner of the room, slightly angled as if someone dragged it away from the table and forgot to push it back.",
+          "description": "The seventh chair is a mimic that escaped from the menagerie (M19). It attacks when a creature sits in it, touches it, or moves within 5 feet.",
+          "dm_notes": [
+            {
+              "type": "tip",
+              "content": "If the party was warned by Cumin ('The seventh chair is wrong'), a cautious approach should be rewarded with a free surprise round before the mimic retaliates."
+            }
+          ],
+          "lethality_warning": "A mimic bite deals average 12 damage (1d8+3 + 1d8 acid). Most level 1 PCs have 8-12 HP. This can one-shot. The adhesive grapple with disadvantage to escape means a grabbed character is stuck for multiple rounds getting bitten.\n\nTactical outs: AC 12 means focus fire works. Alcohol or fire on adhesive could free a stuck character (not RAW, but reward creativity). Cumin warned them — if they ignored it, consequences should sting.",
+          "threats": [
+            {
+              "name": "Mimic",
+              "trigger": "A creature sits in, touches, or moves within 5 feet of the seventh chair",
+              "behavior": "Ambush predator. Grabs and bites. May focus on downed prey rather than chasing others.",
+              "combat_notes": "58 HP is a LOT for level 1 but AC 12 means hits land. 3 PCs focus-firing can grind it down in 4-5 rounds. The adhesive grapple with disadvantage is the real killer.",
+              "stat_block": {
+                "name": "Mimic",
+                "ac": 12,
+                "ac_note": "natural armor",
+                "hp": 58,
+                "hp_formula": "9d8+18",
+                "speed": "15 ft.",
+                "abilities": { "str": 17, "dex": 12, "con": 15, "int": 5, "wis": 13, "cha": 8 },
+                "cr": "2",
+                "attacks": [
+                  { "name": "Pseudopod", "to_hit": 5, "reach": "5 ft.", "damage": "1d8+3", "damage_type": "bludgeoning", "effects": "Target is grappled (escape DC 13) if mimic is in object form." },
+                  { "name": "Bite", "to_hit": 5, "reach": "5 ft.", "damage": "1d8+3 + 1d8 acid", "damage_type": "piercing + acid", "effects": "Only against grappled targets." }
+                ],
+                "special_abilities": [
+                  { "name": "Shapechanger", "description": "Can alter form to resemble a Medium object. Reverts on death." },
+                  { "name": "Adhesive (Object Form)", "description": "Adheres to anything that touches it. Creature adhered is grappled (escape DC 13). Ability checks to escape made with disadvantage." },
+                  { "name": "Grappler", "description": "Advantage on attack rolls against creatures it's grappling." }
+                ],
+                "damage_vulnerabilities": [],
+                "damage_resistances": [],
+                "damage_immunities": ["acid"],
+                "condition_immunities": ["prone (in object form)"]
+              }
+            }
+          ],
+          "interactions": [],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": ["m6-kitchen", "m2-hallway"]
+        },
+        {
+          "id": "m8-parlor",
+          "title": "M8. Parlor / Sitting Room",
+          "tags": ["upper-floor", "combat", "puzzle-book"],
+          "read_aloud": "A comfortable sitting room with overstuffed furniture, a thick carpet, and a cold fireplace. Bookshelves line two walls. Above the fireplace mantle, two longswords are mounted on decorative brackets, their blades catching the lamplight.",
+          "description": "Two flying swords animate and attack when characters approach the fireplace or try to take the swords. Bookshelves contain Fistandia's recreational collection — novels, poetry, lighter reading in six languages.",
+          "dm_notes": [
+            {
+              "type": "tip",
+              "content": "AC 17 is surprisingly hard to hit for level 1. Consider having the swords defend a zone (the fireplace area) rather than chasing — lets players choose to disengage. Two swords = two attacks per round, averaging 5.5 each."
+            }
+          ],
+          "threats": [
+            {
+              "name": "Flying Sword (×2)",
+              "trigger": "Characters approach the fireplace mantle or attempt to take a sword",
+              "behavior": "Defend the fireplace area. Will pursue if attacked but prefer to guard their zone.",
+              "combat_notes": "AC 17 means level 1 PCs need to roll 12-14+ to hit. Frustrating grind. Consider zone defense to let players choose engagement.",
+              "stat_block": {
+                "name": "Flying Sword",
+                "ac": 17,
+                "ac_note": "natural armor",
+                "hp": 17,
+                "hp_formula": "5d6",
+                "speed": "0 ft., fly 50 ft. (hover)",
+                "cr": "1/4",
+                "attacks": [
+                  { "name": "Longsword", "to_hit": 3, "reach": "5 ft.", "damage": "1d8+1", "damage_type": "slashing", "effects": null }
+                ],
+                "special_abilities": [
+                  { "name": "Antimagic Susceptibility", "description": "Incapacitated in antimagic field. Dispel Magic (DC 14) destroys it." },
+                  { "name": "False Appearance", "description": "Indistinguishable from a normal sword when motionless." }
+                ],
+                "damage_vulnerabilities": [],
+                "damage_resistances": [],
+                "damage_immunities": ["poison", "psychic"],
+                "condition_immunities": ["blinded", "charmed", "deafened", "frightened", "paralyzed", "petrified", "poisoned"]
+              }
+            }
+          ],
+          "interactions": [],
+          "treasure": [],
+          "puzzle_book": {
+            "letter": "P",
+            "location_description": "Wedged between couch cushions",
+            "discovery": "Investigation DC 10 or 'I check the couch' finds it.",
+            "illustration": "A domed ceiling painted with stars."
+          },
+          "connections": ["m2-hallway"]
+        },
+        {
+          "id": "m9-arboretum",
+          "title": "M9. Arboretum ★ WHIMSY HIGHLIGHT",
+          "tags": ["upper-floor", "roleplay", "puzzle-book", "whimsy"],
+          "read_aloud": "The door opens onto an impossibly lush indoor garden. Three large planted beds overflow with herbs, flowers, and small fruit trees, all thriving under the strange indigo light that streams through floor-to-ceiling windows. The air is warm, humid, and smells of earth, green things, and blossoms. Hanging vines trail from the ceiling. A crystal ball rests on a pedestal near the windows, and beyond the glass, the purple miasma swirls hypnotically.\n\nYou hear giggling. High-pitched, musical, and coming from... nowhere. And everywhere.",
+          "description": "Two invisible faerie dragons live here. They've been alone for years and are thrilled to have visitors — expressed through pranks first, then friendly interaction if the party is patient.",
+          "dm_notes": [
+            {
+              "type": "rp_guidance",
+              "title": "Faerie Dragon Prank Sequence",
+              "content": "Round 1: Giggling from vines. Nothing visible.\nRound 2: A character's shoelace unties. More giggling.\nRound 3: Minor illusion — a tiny flower-dragon dances on a leaf, then poofs.\nRound 4: Euphoria Breath on the most serious character.\nRound 5+: If the party is friendly/funny, dragons reveal themselves — shimmering into view like hummingbirds."
+            },
+            {
+              "type": "rp_guidance",
+              "title": "Playing the Dragons",
+              "content": "Give them names if befriended — they name themselves things like 'Sparkle' and 'Captain Magnificent.' Squeaky voices, fast, overlapping, finishing each other's sentences. They can describe every room (unhelpfully): 'The chain room has angry books! Very bitey!' They know about puzzle books: 'The sparkly-spine books! We used to hide them for fun but then Cumin yelled at us.' They can be bribed with food, games, riddles, or compliments."
+            }
+          ],
+          "threats": [
+            {
+              "name": "Faerie Dragon (×2, violet/youngest)",
+              "trigger": null,
+              "behavior": "Invisible pranksters. Not hostile. Will befriend the party if treated well.",
+              "combat_notes": "Not a combat encounter. If somehow provoked: magic resistance + superior invisibility makes them nearly impossible to fight. They'd flee.",
+              "stat_block": {
+                "name": "Faerie Dragon (Violet, Youngest)",
+                "ac": 15,
+                "hp": 14,
+                "hp_formula": "4d4+4",
+                "speed": "10 ft., fly 60 ft.",
+                "abilities": { "str": 3, "dex": 20, "con": 13, "int": 14, "wis": 12, "cha": 16 },
+                "cr": "1",
+                "attacks": [
+                  { "name": "Bite", "to_hit": 7, "reach": "5 ft.", "damage": "1", "damage_type": "piercing", "effects": null }
+                ],
+                "special_abilities": [
+                  { "name": "Superior Invisibility", "description": "Bonus action to turn invisible. Remains invisible even while attacking or casting." },
+                  { "name": "Euphoria Breath (Recharge 5-6)", "description": "5-ft. cone. DC 11 Wis save or incapacitated 1 minute (charmed, giggly, blissful). Repeat save end of each turn." },
+                  { "name": "Innate Spellcasting", "description": "At will: dancing lights, mage hand, minor illusion." },
+                  { "name": "Magic Resistance", "description": "Advantage on saves vs. spells and magical effects." },
+                  { "name": "Limited Telepathy", "description": "Communicates simple ideas and emotions within 100 ft." }
+                ],
+                "damage_vulnerabilities": [],
+                "damage_resistances": [],
+                "damage_immunities": [],
+                "condition_immunities": []
+              }
+            }
+          ],
+          "interactions": [],
+          "treasure": [],
+          "puzzle_book": {
+            "letter": "C",
+            "location_description": "On a shelf, half-hidden by overgrown vines",
+            "discovery": "Passive Perception 14+ spots the golden glint, or deliberate search (Investigation DC 12).",
+            "illustration": "A cluttered room with bubbling beakers."
+          },
+          "connections": ["m2-hallway", "m10-greenhouse"]
+        },
+        {
+          "id": "m10-greenhouse",
+          "title": "M10. Greenhouse",
+          "tags": ["upper-floor", "exploration", "breather"],
+          "read_aloud": "An extension of the arboretum, more utilitarian than ornamental. Potting benches, growing trays, gardening tools, and clay pots in various sizes. Some plants have wildly outgrown their containers — one vine has climbed the entire wall and is pressing against the ceiling. A watering can sits on a bench, slowly and continuously filling itself from nothing and overflowing onto the floor. The puddle beneath it is decades old and has fostered a small ecosystem of moss.",
+          "description": "Atmospheric breather room. Everflowing watering can (minor magic item), herbalism supplies, two docile giant fire beetles.",
+          "dm_notes": [],
+          "threats": [
+            {
+              "name": "Giant Fire Beetle (×2)",
+              "trigger": null,
+              "behavior": "Docile. Not aggressive unless attacked. Glowing glands shed bright light 10 ft.",
+              "combat_notes": "Not a real threat. 4 HP each. Glands glow 1d6 days after death.",
+              "stat_block": {
+                "name": "Giant Fire Beetle",
+                "ac": 13,
+                "ac_note": "natural armor",
+                "hp": 4,
+                "hp_formula": "1d6+1",
+                "speed": "30 ft.",
+                "cr": "0",
+                "attacks": [
+                  { "name": "Bite", "to_hit": 1, "reach": "5 ft.", "damage": "1d6-1", "damage_type": "slashing", "effects": null }
+                ],
+                "special_abilities": [
+                  { "name": "Illumination", "description": "Sheds bright light in a 10-ft. radius and dim light for an additional 10 ft." }
+                ],
+                "damage_vulnerabilities": [],
+                "damage_resistances": [],
+                "damage_immunities": [],
+                "condition_immunities": []
+              }
+            }
+          ],
+          "interactions": [
+            { "action": "Examine watering can", "check": null, "result": "Minor magic item — produces slow steady stream of clean water indefinitely. Weighs 3 lbs. Useful for travel." },
+            { "action": "Gather herbs", "check": "Herbalism Kit proficiency or Arcana DC 12", "result": "Enough ingredients for 2 healer's kits (10 uses each) with 30 min gathering." }
+          ],
+          "treasure": [
+            { "room": "M10", "item": "Everflowing watering can", "value": "Minor magic item" },
+            { "room": "M10", "item": "Herbalism supplies", "value": "2 healer's kits (with 30 min work)" }
+          ],
+          "puzzle_book": null,
+          "connections": ["m9-arboretum"]
+        },
+        {
+          "id": "m11-laboratory",
+          "title": "M11. Laboratory",
+          "tags": ["lower-level", "exploration", "lore", "puzzle-book"],
+          "read_aloud": "A cluttered alchemical laboratory. Three long wooden tables are covered in glassware — beakers, alembics, retorts, coiled copper tubing, and the residue of experiments long concluded. The air has a faint chemical tang. Books and notebooks are scattered across every surface.\n\nIn one corner, inlaid into the stone floor, is a circle of silver filigree about five feet in diameter. Sylvan runes are etched around its circumference. The circle is cracked — a jagged line runs through its center, and several runes are damaged.",
+          "description": "Alchemy lab with a broken fey binding circle. Connects the figurine on Matreous's body to the Mischief Sprite thread. Sylvan script above the doorway: 'Speak friend and enter' (Fistandia's humor — not a real puzzle).",
+          "dm_notes": [
+            {
+              "type": "lore",
+              "title": "The Fey Binding Circle",
+              "content": "Arcana DC 13: Summoning/binding circle for Feywild creatures. Broken — whatever was bound escaped.\nArcana DC 16: Designed for small fey (sprites, pixies). Included compulsion elements — not a friendly arrangement.\nInvestigation DC 12: Fistandia's lab notes describe binding a 'willful sprite' and sealing it in a cold-iron figurine for safety."
+            }
+          ],
+          "threats": [],
+          "interactions": [
+            { "action": "Examine the binding circle", "check": "Arcana DC 13", "result": "Summoning circle for Feywild creatures. Broken — whatever was bound here escaped." },
+            { "action": "Deeper examination", "check": "Arcana DC 16", "result": "Designed for small fey. Included magical compulsion. Not a friendly arrangement." },
+            { "action": "Search lab notes", "check": "Investigation DC 12", "result": "Fistandia's records of binding a 'willful sprite' and sealing it in a cold-iron figurine." },
+            { "action": "Read Sylvan above doorway", "check": "Reads Sylvan, or Arcana DC 12", "result": "'Speak friend and enter.' A joke — the door isn't locked or trapped." },
+            { "action": "Brew potions", "check": "Alchemist's supplies proficiency or Arcana DC 12, 1 hour", "result": "Enough ingredients for 2 potions of healing (2d4+2 HP each)." }
+          ],
+          "treasure": [
+            { "room": "M11", "item": "Alchemical ingredients", "value": "2 potions of healing (with 1 hr work)" }
+          ],
+          "puzzle_book": {
+            "letter": "T",
+            "location_description": "Among books on the middle table",
+            "discovery": "Easily spotted when examining the tables.",
+            "illustration": "A room full of cages and glass terrariums."
+          },
+          "connections": ["m12-planetarium"]
+        },
+        {
+          "id": "m12-planetarium",
+          "title": "M12. Planetarium ★ PUZZLE HIGHLIGHT",
+          "tags": ["lower-level", "puzzle"],
+          "read_aloud": "You enter a circular room with a high domed ceiling. The dome is painted with an astonishing depiction of the night sky — hundreds of stars, constellations, nebulae, and celestial bodies rendered in luminous paint that glows with its own faint light. The effect is breathtaking — it genuinely looks like standing under an open sky on a clear night.\n\nFive brass telescopes on wooden tripods are arranged in a semicircle around the room, each pointed at a different section of the dome. In the exact center, a crystal ball the size of a human head rests on an ornate bronze pedestal. It's dark and inert.",
+          "description": "Five telescopes must be aimed at the five brightest stars on the dome. When aligned, light channels through the crystal ball and reveals a hidden door to M13.",
+          "dm_notes": [
+            {
+              "type": "tip",
+              "title": "Running the Puzzle",
+              "content": "Let players experiment freely. DC 12 Perception or Investigation to identify the five brightest stars. When a telescope targets a correct star, a faint beam of light appears — feedback that they got one right. When all five align: beams converge on crystal ball, brilliant white light, harmonic hum, hidden door revealed. If stuck: touching the crystal ball shows ghostly lines connecting the five stars like a constellation map. No wrong answers are punished. This should feel satisfying, not frustrating."
+            }
+          ],
+          "threats": [],
+          "interactions": [
+            { "action": "Identify brightest stars", "check": "Perception or Investigation DC 12", "result": "Five stars are noticeably brighter/larger than the others." },
+            { "action": "Touch the crystal ball", "check": null, "result": "Ghostly lines appear on dome connecting the five brightest stars — makes targets obvious." },
+            { "action": "Align all five telescopes", "check": null, "result": "Beams converge on crystal ball, room floods with light, hidden door in wall becomes visible and openable." }
+          ],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": ["m11-laboratory", "m13-chained-library"]
+        },
+        {
+          "id": "m13-chained-library",
+          "title": "M13. The Chained Library ★ HIGH DANGER",
+          "tags": ["lower-level", "combat", "high-danger", "puzzle-book"],
+          "read_aloud": "A small, low-ceilinged room. The first thing you notice is the chains — dozens of heavy iron chains hanging from the ceiling and bolted to the walls, each connected to a thick, metal-bound book on the room's shelves. The books hang from their chains at various heights, motionless, like strange iron fruit. A single desk sits near the door with a few loose papers and books on its surface.\n\nThe air feels heavy. Watchful. The chains sway almost imperceptibly, though there is no breeze.",
+          "description": "The entire room of chained books acts as one animated entity. Activates when characters touch a chained book or move within 5 feet of shelves. The desk near the door is SAFE — the puzzle book is on the desk, not the shelves.",
+          "lethality_warning": "DEADLIEST ENCOUNTER IN THE ADVENTURE. Each slam averages 11 damage (2d6+4). Two per round = 22 average. A level 1 PC can be dropped in a single hit. If excess damage equals or exceeds max HP, that's INSTANT DEATH — no death saves.\n\nExample: A wizard with 6 max HP at full health takes 14 damage = -8 HP. Excess (8) exceeds max HP (6). Dead.\n\nBUT: The library can't move. Smart approaches: grab the book from the desk and run (Stealth DC 14 or Sleight of Hand DC 14 to avoid triggering); stay at range beyond 10 ft. reach; sever chains with slashing weapons; just don't go near the shelves.",
+          "dm_notes": [
+            {
+              "type": "warning",
+              "title": "This Encounter Rewards Thinking",
+              "content": "Make the chains visually threatening BEFORE they animate. Describe them swaying, describe metallic groaning. Give the party every reason to be cautious. If they bull-rush in — consequences. If they're clever — the puzzle book is right on the desk by the door."
+            }
+          ],
+          "threats": [
+            {
+              "name": "Animated Chained Library",
+              "trigger": "A character touches any chained book or moves within 5 feet of the shelves",
+              "behavior": "Immobile — attacks anything within 10 ft. reach. Cannot pursue. Whips chained books like flails.",
+              "combat_notes": "0 speed. 10 ft reach is the danger zone. Grab the desk items and run, or attack from range. Slashing weapons can target chains (consider lower AC 12 for chains). The puzzle book is on the DESK, not the shelves.",
+              "stat_block": {
+                "name": "Animated Chained Library",
+                "ac": 14,
+                "ac_note": "chains",
+                "hp": 45,
+                "hp_formula": "6d10+12",
+                "speed": "0 ft. (immobile)",
+                "abilities": { "str": 18, "dex": 8, "con": 14, "int": 1, "wis": 3, "cha": 1 },
+                "cr": "1",
+                "attacks": [
+                  { "name": "Chain-Book Slam (×2, Multiattack)", "to_hit": 6, "reach": "10 ft.", "damage": "2d6+4", "damage_type": "bludgeoning", "effects": "DC 14 Strength save or restrained by chains. Library can restrain up to 2 creatures. Escape: DC 14 Athletics." }
+                ],
+                "special_abilities": [
+                  { "name": "Multiattack", "description": "Makes 2 chain-book slam attacks." },
+                  { "name": "Immobile", "description": "The library is attached to walls and ceiling. It cannot move." }
+                ],
+                "damage_vulnerabilities": [],
+                "damage_resistances": [],
+                "damage_immunities": ["poison", "psychic"],
+                "condition_immunities": ["blinded", "charmed", "deafened", "exhaustion", "frightened", "paralyzed", "petrified", "poisoned"]
+              }
+            }
+          ],
+          "interactions": [
+            { "action": "Grab puzzle book from desk quietly", "check": "Stealth DC 14 or Sleight of Hand DC 14", "result": "Take the book without triggering the library." },
+            { "action": "Target chains with slashing", "check": "Attack roll vs AC 12 (chains)", "result": "Each severed chain removes one book from the entity's arsenal." }
+          ],
+          "treasure": [],
+          "puzzle_book": {
+            "letter": "R",
+            "location_description": "On the desk near the door (NOT on the chained shelves)",
+            "discovery": "Visible on the desk. The challenge is avoiding the library, not finding the book.",
+            "illustration": "The foyer with glowing double doors — confirming this is the last book and the foyer is the exit."
+          },
+          "connections": ["m12-planetarium"]
+        },
+        {
+          "id": "m14-storage",
+          "title": "M14. Storage Room",
+          "tags": ["lower-level", "exploration"],
+          "read_aloud": "A utilitarian space. Wooden crates, old furniture draped in cloth, rolled-up carpets, and miscellaneous supplies line the walls. Everything is covered in thick dust — unlike the upper floor, the homunculi don't venture down here to clean.",
+          "description": "Mundane supplies with a few useful finds.",
+          "dm_notes": [],
+          "threats": [],
+          "interactions": [
+            { "action": "Thorough search (10 min)", "check": null, "result": "Mason's tools, 3 flasks of oil (improvised fire weapons), healer's kit (10 uses), good traveling cloak." }
+          ],
+          "treasure": [
+            { "room": "M14", "item": "3 flasks of oil", "value": "Equipment" },
+            { "room": "M14", "item": "Healer's kit (10 uses)", "value": "Equipment" }
+          ],
+          "puzzle_book": null,
+          "connections": ["m5-study", "m15-bedroom"]
+        },
+        {
+          "id": "m15-bedroom",
+          "title": "M15. Bedroom",
+          "tags": ["lower-level", "lore", "treasure"],
+          "read_aloud": "A spacious bedroom with a large four-poster bed, a wardrobe, a dressing table, and a window overlooking the indigo miasma. The bed is neatly made. Personal items are arranged on the dressing table: a silver hand mirror, a hairbrush, a small jewelry box.",
+          "description": "Fistandia's personal quarters. Loot-rich. Personal journals flesh out her character and set up future campaign hooks.",
+          "dm_notes": [
+            {
+              "type": "lore",
+              "title": "Fistandia's Diary (Nightstand)",
+              "content": "Mostly mundane entries. Notable passages:\n• Mentions missing sunlight and wanting to travel to the Feywild 'where the light is always golden.'\n• Describes an argument with Freyot about whether binding fey creatures was ethical.\n• Final entry: 'We leave tomorrow. I don't know when we'll return. Cumin and Coriander will keep the house.'"
+            }
+          ],
+          "threats": [],
+          "interactions": [
+            { "action": "Open locked chest under bed", "check": "Thieves' tools DC 14 or Strength DC 17", "result": "75 gp, 120 sp, Scroll of Comprehend Languages." },
+            { "action": "Examine jewelry box", "check": null, "result": "Gold earrings (25 gp), moonstone ring (50 gp), locket with painted portrait of Fistandia and Freyot." }
+          ],
+          "treasure": [
+            { "room": "M15", "item": "Silver hand mirror", "value": "25 gp" },
+            { "room": "M15", "item": "Gold earrings", "value": "25 gp" },
+            { "room": "M15", "item": "Moonstone ring", "value": "50 gp" },
+            { "room": "M15", "item": "Locket with portrait", "value": "Sentimental / plot" },
+            { "room": "M15", "item": "Locked chest", "value": "75 gp, 120 sp, Scroll of Comprehend Languages" }
+          ],
+          "puzzle_book": null,
+          "connections": ["m14-storage", "m16-bathroom"]
+        },
+        {
+          "id": "m16-bathroom",
+          "title": "M16. Bathroom",
+          "tags": ["lower-level", "breather", "treasure"],
+          "read_aloud": "A functional bathroom. A stone basin with a brass tap — the water runs clear and warm when turned, apparently forever. A large copper tub. Towels folded neatly. A bar of soap that smells of lavender and hasn't degraded at all.",
+          "description": "Rest and recovery room. Hidden potion in medicine cabinet.",
+          "dm_notes": [],
+          "threats": [],
+          "interactions": [
+            { "action": "Check medicine cabinet behind mirror", "check": "Investigation DC 12", "result": "Potion of healing (2d4+2 HP)." }
+          ],
+          "treasure": [
+            { "room": "M16", "item": "Potion of healing", "value": "2d4+2 HP" }
+          ],
+          "puzzle_book": null,
+          "connections": ["m15-bedroom"]
+        },
+        {
+          "id": "m17-trophy-room",
+          "title": "M17. Trophy Room",
+          "tags": ["lower-level", "lore"],
+          "read_aloud": "Shelves of curiosities line every wall — preserved specimens in jars, strange artifacts on display stands, mineral samples, foreign coins, small sculptures, and unidentifiable objects that radiate faint magic. This is clearly a personal collection amassed over decades.",
+          "description": "Collection of curiosities. Key item: empty cold-iron cage with bent-open door — foreshadows the Mischief Sprite.",
+          "dm_notes": [
+            {
+              "type": "lore",
+              "title": "Notable Items",
+              "content": "Preserved fey specimens in jars (academic, labeled in Fistandia's hand).\nEmpty cold-iron cage (1 ft square, Sylvan binding runes) — door bent open from inside with considerable force. Arcana DC 13: cold iron suppresses fey magic.\nCrystal prism that breaks light into 12 colors instead of 7 (100 gp).\n3-4 unidentifiable artifacts radiating faint transmutation magic — future plot hooks."
+            }
+          ],
+          "threats": [],
+          "interactions": [
+            { "action": "Examine cold-iron cage", "check": "Arcana DC 13", "result": "Cold iron suppresses fey magic. Whatever was in this cage broke out with force. Door bent from inside." }
+          ],
+          "treasure": [
+            { "room": "M17", "item": "Crystal prism (12 colors)", "value": "100 gp" }
+          ],
+          "puzzle_book": null,
+          "connections": ["m14-storage", "m18-crawling-claw"]
+        },
+        {
+          "id": "m18-crawling-claw",
+          "title": "M18. Crawling Claw Room",
+          "tags": ["lower-level", "combat", "comedy"],
+          "read_aloud": "A small, windowless room that might have been secondary storage. Mostly empty shelves. Dusty floor. As you step inside, you hear a faint scratching — like nails on stone — from behind a crate in the corner.",
+          "description": "A severed hand skitters out and attacks. Jump scare, not a real threat. 2 HP = one hit kills it.",
+          "dm_notes": [
+            {
+              "type": "tip",
+              "content": "Play this for the startled yelp at the table. It scuttles up a wall, lunges for someone's face, gets swatted. Good for a laugh after the tension of the chained library."
+            }
+          ],
+          "threats": [
+            {
+              "name": "Crawling Claw",
+              "trigger": "Characters enter the room",
+              "behavior": "Skitters out and attacks immediately. Pure jump scare.",
+              "combat_notes": "2 HP. Any hit kills it. Not a real threat.",
+              "stat_block": {
+                "name": "Crawling Claw",
+                "ac": 12,
+                "hp": 2,
+                "hp_formula": "1d4",
+                "speed": "20 ft., climb 20 ft.",
+                "cr": "0",
+                "attacks": [
+                  { "name": "Claw", "to_hit": 3, "reach": "5 ft.", "damage": "1d4+1", "damage_type": "bludgeoning or slashing", "effects": null }
+                ],
+                "special_abilities": [
+                  { "name": "Turn Immunity", "description": "If turned, can't be turned again for 24 hours." }
+                ],
+                "damage_vulnerabilities": [],
+                "damage_resistances": [],
+                "damage_immunities": ["poison"],
+                "condition_immunities": ["charmed", "exhaustion", "poisoned"]
+              }
+            }
+          ],
+          "interactions": [],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": ["m17-trophy-room", "m19-menagerie"]
+        },
+        {
+          "id": "m19-menagerie",
+          "title": "M19. Menagerie",
+          "tags": ["lower-level", "exploration", "roleplay", "puzzle-book"],
+          "read_aloud": "A long room lined with glass terrariums, iron cages, and display cases. Some empty. Some... not. This was a collection of living magical specimens — an arcane menagerie. Most creatures are long dead, but a few enclosures still hold living occupants.",
+          "description": "Contains an arcanoplasm (reflavored slaad tadpole), a flumph, a puckstone toad (reflavored quasit), and an empty terrarium where the mimic escaped from.",
+          "dm_notes": [
+            {
+              "type": "rp_guidance",
+              "title": "The Flumph",
+              "content": "The flumph is a secret weapon for engagement. It's adorable, helpless, grateful, glows pink, and communicates through telepathic emotions. Players will adopt it. Let them. It provides soft light, gentle encouragement, and zero combat utility. Perfect mascot."
+            }
+          ],
+          "threats": [
+            {
+              "name": "Arcanoplasm (reflavored Slaad Tadpole)",
+              "trigger": null,
+              "behavior": "Curious, not aggressive. Presses against glass when characters approach. Might bite if startled after release.",
+              "combat_notes": "5 HP. Barely a threat. More interesting as a curiosity.",
+              "stat_block": {
+                "name": "Arcanoplasm",
+                "ac": 12,
+                "hp": 5,
+                "hp_formula": "2d4",
+                "speed": "30 ft.",
+                "cr": "1/8",
+                "attacks": [
+                  { "name": "Bite", "to_hit": 4, "reach": "5 ft.", "damage": "1d4+2", "damage_type": "piercing", "effects": null }
+                ],
+                "special_abilities": [],
+                "damage_vulnerabilities": [],
+                "damage_resistances": [],
+                "damage_immunities": [],
+                "condition_immunities": []
+              }
+            }
+          ],
+          "interactions": [
+            { "action": "Free the flumph", "check": null, "result": "Glows pink with gratitude. Follows party. Telepathic emotions: warmth, curiosity, hunger." },
+            { "action": "Examine the puckstone toad", "check": "Arcana DC 14", "result": "A fey creature polymorphed into toad form. Might revert eventually. Seems content as a toad." },
+            { "action": "Examine empty terrarium", "check": null, "result": "Broken latch. Something pushed out from inside. (This is where the mimic escaped.)" }
+          ],
+          "treasure": [],
+          "puzzle_book": {
+            "letter": "E",
+            "location_description": "Inside a glass terrarium, sitting atop soil (no creature in this one)",
+            "discovery": "Visible through the glass when examining the terrariums.",
+            "illustration": "A bookcase draped in heavy chains."
+          },
+          "connections": ["m18-crawling-claw"]
+        }
+      ]
+    },
+    {
+      "id": "act-3",
+      "title": "Act 3: The Exit & Campaign Hook",
+      "target_time": "~30 minutes",
+      "sections": [
+        {
+          "id": "speaking-the-word",
+          "title": "Speaking the Word — CHAPTER",
+          "tags": ["exit", "puzzle-resolution"],
+          "read_aloud": "The moment the word leaves your lips, the stone archway blazes with light. The knotwork carvings glow white-hot for an instant, and then — translucent double doors shimmer into existence within the arch. Through them, you can see a familiar sight: the small study room in the Pillars of Pedagogy. Matreous's belongings. The desk. The open book. Candlekeep.\n\nThe doors are solid enough to touch. They're waiting for you.",
+          "description": "The exit portal opens when 'chapter' is spoken within 10 feet of the foyer arch. Before stepping through, give the party time to say goodbye to Cumin and Coriander, gather items, and collect themselves.",
+          "dm_notes": [
+            {
+              "type": "rp_guidance",
+              "title": "Goodbyes",
+              "content": "If anyone asks Cumin and Coriander to come: Cumin says 'We must stay. The Mistress told us to maintain the house.' Coriander looks wistful: 'She'll come back. Won't she?' Plant the emotional hook. Don't resolve it. The cat, flumph, and faerie dragons will follow through the portal."
+            }
+          ],
+          "threats": [],
+          "interactions": [],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": ["optional-sprite", "keepers-offer"]
+        },
+        {
+          "id": "optional-sprite",
+          "title": "OPTIONAL: Mischief Sprite Encounter",
+          "tags": ["optional", "combat"],
+          "read_aloud": null,
+          "description": "Deploy ONLY if the mansion felt too safe. The Mischief Sprite escaped from the cracked figurine and has been loose in Candlekeep. It's hiding in Matreous's study. If the session was already tense enough, skip entirely — the figurine becomes a ticking time bomb for a future session.",
+          "lethality_warning": "The sting deals average 16 damage (1d4+3 piercing + 3d6 psychic). This will likely one-shot any level 1 PC on a failed save. Even on a success, ~13 damage. BUT: only 10 HP — one or two solid hits end it. It goes invisible and stings isolated targets but is cowardly. At 5 HP or less, it surrenders or flees.",
+          "dm_notes": [
+            {
+              "type": "warning",
+              "title": "DM Judgment Call",
+              "content": "This is your safety valve. If the party breezed through the mansion, deploy it for one last spike. If they're already beaten up, skip it entirely. If you skip it, the cracked figurine on Matreous's body is a ticking bomb for a future session."
+            }
+          ],
+          "threats": [
+            {
+              "name": "Mischief Sprite (reflavored Imp)",
+              "trigger": "DM deploys it as the party exits the mansion portal",
+              "behavior": "Goes invisible, stings isolated targets, tries to flee if wounded. Cruel but cowardly — fey, not fiendish.",
+              "combat_notes": "10 HP = glass cannon. One-shots PCs but dies to one or two hits. Invisibility is the main challenge — flour, dust, or creative spells can reveal it. Small study room = limited hiding space.",
+              "stat_block": {
+                "name": "Mischief Sprite",
+                "ac": 13,
+                "hp": 10,
+                "hp_formula": "3d4+3",
+                "speed": "20 ft., fly 40 ft.",
+                "abilities": { "str": 6, "dex": 17, "con": 13, "int": 11, "wis": 12, "cha": 14 },
+                "cr": "1",
+                "attacks": [
+                  { "name": "Sting", "to_hit": 5, "reach": "5 ft.", "damage": "1d4+3 + 3d6 psychic", "damage_type": "piercing + psychic", "effects": "DC 11 Con save, half psychic on success. Psychic damage manifests as vivid hallucinations." }
+                ],
+                "special_abilities": [
+                  { "name": "Shapechanger", "description": "Can polymorph into mouse, songbird, or moth. Stats same in all forms except speed." },
+                  { "name": "Invisibility", "description": "Turns invisible until it attacks, casts, or loses concentration." }
+                ],
+                "damage_vulnerabilities": [],
+                "damage_resistances": ["cold", "bludgeoning/piercing/slashing from nonmagical attacks"],
+                "damage_immunities": ["psychic"],
+                "condition_immunities": []
+              }
+            }
+          ],
+          "interactions": [],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": ["keepers-offer"]
+        },
+        {
+          "id": "keepers-offer",
+          "title": "The Keeper's Offer → The New Mystery",
+          "tags": ["campaign-hook", "roleplay"],
+          "read_aloud": "You're led to a private study high in one of the towers. The Keeper of Tomes sits behind a desk covered in carefully organized papers. They rise when you enter — slowly, with the careful movement of someone who has been sitting for too long — and regard you with sharp, dark eyes.\n\n'I understand you've had quite a day,' the Keeper says. 'Please, sit.'",
+          "description": "The Keeper explains the escalating book incidents and offers the party a permanent arrangement: lodging, library access, and compensation in exchange for investigating book-related crises. Mid-offer, an Avowed bursts in with a new emergency. The Keeper turns to the party expectantly.",
+          "dm_notes": [
+            {
+              "type": "tip",
+              "title": "The Keeper's Pitch",
+              "content": "The Keeper explains: incidents increasing, third this year, accelerating. The Avowed are scholars not adventurers. The offer: permanent lodging in the House of Rest, outer library access, stipend (50 gp per investigation). 'When a book-related crisis occurs, you investigate.'"
+            },
+            {
+              "type": "rp_guidance",
+              "title": "The Interruption",
+              "content": "Before the party responds to the offer, the door bursts open. An Avowed scholar, breathless: 'Keeper — Scholar Valetta's study room is sealed shut. We hear sounds but the door won't open. There's music coming from the walls. It started an hour ago and anyone who listens too long starts humming it. They can't stop.'\n\nThe Keeper looks at the Avowed. Then slowly turns to the party. Says nothing. Just waits expectantly.\n\nEND OF SESSION."
+            },
+            {
+              "type": "lore",
+              "title": "Campaign Setup",
+              "content": "The music/humming teases 'Shemshime's Bedtime Rhyme' (CM #5) or any adventure you choose. The escalating pattern is the campaign spine — why are incidents increasing? Someone activating books? Wards failing? Something waking in the deep library? You don't need the answer yet."
+            }
+          ],
+          "threats": [],
+          "interactions": [],
+          "treasure": [],
+          "puzzle_book": null,
+          "connections": []
+        }
+      ]
+    }
+  ],
+  "appendices": [
+    {
+      "id": "whimsy-table",
+      "title": "Whimsy & Weirdness Table",
+      "content": [
+        { "roll": 1, "description": "A book on a shelf is snoring softly. If opened, it yawns and the pages flutter." },
+        { "roll": 2, "description": "A painting on the wall follows the party with its eyes. If addressed directly, it looks embarrassed and stops." },
+        { "roll": 3, "description": "A jar of preserved fireflies on a shelf still glows faintly. If shaken, they spell out 'HELLO' before going dark." },
+        { "roll": 4, "description": "A half-finished chess game on a side table. The pieces make rude gestures if anyone moves them out of turn." },
+        { "roll": 5, "description": "A doorknob giggles when turned." },
+        { "roll": 6, "description": "The carpet in the hallway ripples underfoot like water, but feels solid." },
+        { "roll": 7, "description": "A music box plays a tune nobody recognizes but which feels inexplicably nostalgic." },
+        { "roll": 8, "description": "A mirror reflects everyone accurately — except it shows them all wearing elaborate wizard hats." },
+        { "roll": 9, "description": "A stack of blank paper on a desk. If touched, the top sheet folds into an origami crane and flies in a lazy circle." },
+        { "roll": 10, "description": "A closet door is warm to the touch. Inside: a perfectly ordinary closet, but the coat is very warm, as if someone just took it off." }
+      ]
+    },
+    {
+      "id": "lore-threads",
+      "title": "Lore Threads for Future Sessions",
+      "content": [
+        { "thread": "Fistandia & Freyot are alive", "clue": "Homunculi still live. Journals mention leaving. No bodies.", "future": "Where did they go? The Feywild? Trapped? Can the party find them?" },
+        { "thread": "Escalating incidents", "clue": "Keeper mentions increasing book crises", "future": "Someone or something is activating dangerous books. Who? Why?" },
+        { "thread": "Fistandia's fey research", "clue": "Binding circle, cold iron cage, figurine, lab notes", "future": "Was she trying to access the Feywild permanently? Did she succeed?" },
+        { "thread": "The mansion as a resource", "clue": "Permanent demiplane with living servants", "future": "Can the party gain access as a base? What else is hidden?" },
+        { "thread": "The blue-glowing door", "clue": "Fembris ignored it during the tour", "future": "Pure mystery bait. Decide later." },
+        { "thread": "The cracked figurine", "clue": "If sprite wasn't encountered: ticking time bomb", "future": "When does it break? What does the freed sprite want?" },
+        { "thread": "Unidentifiable artifacts", "clue": "Trophy room objects resist identification", "future": "Research quests, future revelations" }
+      ]
+    }
+  ]
+}
