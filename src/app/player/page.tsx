@@ -12,7 +12,6 @@ export default function PlayerDashboard() {
         <p className="text-gray-400 text-sm">Player Dashboard</p>
 
         <div className="space-y-3">
-          {/* Cheat Sheets — active */}
           <Link
             href="/player/reference"
             className="block bg-gray-900 border border-gray-800 rounded-lg p-4 hover:border-amber-400/50 transition-colors"
@@ -26,19 +25,27 @@ export default function PlayerDashboard() {
             </p>
           </Link>
 
-          {/* Character — placeholder */}
-          <div className="block bg-gray-900 border border-gray-800 rounded-lg p-4 opacity-50">
-            <h2 className="text-lg font-semibold text-gray-500">
+          <Link
+            href="/player/character"
+            className="block bg-gray-900 border border-gray-800 rounded-lg p-4 hover:border-amber-400/50 transition-colors"
+          >
+            <h2 className="text-lg font-semibold text-amber-400">
               My Character
             </h2>
-            <p className="text-gray-600 text-sm mt-1">Coming soon.</p>
-          </div>
+            <p className="text-gray-400 text-sm mt-1">
+              View your character sheet or create a new character.
+            </p>
+          </Link>
 
-          {/* Handouts — placeholder */}
-          <div className="block bg-gray-900 border border-gray-800 rounded-lg p-4 opacity-50">
-            <h2 className="text-lg font-semibold text-gray-500">Handouts</h2>
-            <p className="text-gray-600 text-sm mt-1">Coming soon.</p>
-          </div>
+          <Link
+            href="/player/handouts"
+            className="block bg-gray-900 border border-gray-800 rounded-lg p-4 hover:border-amber-400/50 transition-colors"
+          >
+            <h2 className="text-lg font-semibold text-amber-400">Handouts</h2>
+            <p className="text-gray-400 text-sm mt-1">
+              View handouts shared by your DM.
+            </p>
+          </Link>
         </div>
       </div>
     </main>
