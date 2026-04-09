@@ -14,9 +14,25 @@ interface Props {
 interface Race {
   id: string;
   name: string;
-  ability_bonuses: string;
+  ability_bonuses: string | Record<string, number>;
   speed: number;
-  traits: string;
+  traits: string | Array<{ name: string; description?: string }>;
+}
+
+// Format ability bonuses for display — handles both string and JSONB
+function formatBonuses(bonuses: string | Record<string, number>): string {
+  if (typeof bonuses === "string") return bonuses;
+  if (!bonuses || typeof bonuses !== "object") return "";
+  return Object.entries(bonuses)
+    .map(([ab, val]) => `${ab.toUpperCase()} +${val}`)
+    .join(", ");
+}
+
+// Format traits for display — handles both string and JSONB
+function formatTraits(traits: string | Array<{ name: string; description?: string }>): string {
+  if (typeof traits === "string") return traits;
+  if (!Array.isArray(traits)) return "";
+  return traits.map((t) => (typeof t === "string" ? t : t.name)).join(", ");
 }
 
 // Fallback static PHB races when no database data is available
@@ -126,8 +142,8 @@ export function RaceStep({ draft, onUpdate, onNext, onBack }: Props) {
     return races.filter(
       (r) =>
         r.name.toLowerCase().includes(q) ||
-        r.ability_bonuses.toLowerCase().includes(q) ||
-        r.traits.toLowerCase().includes(q)
+        formatBonuses(r.ability_bonuses).toLowerCase().includes(q) ||
+        formatTraits(r.traits).toLowerCase().includes(q)
     );
   }, [races, search]);
 
@@ -177,13 +193,13 @@ export function RaceStep({ draft, onUpdate, onNext, onBack }: Props) {
                   {race.name}
                 </h3>
                 <p className="mt-1 text-sm font-medium text-amber-400">
-                  {race.ability_bonuses}
+                  {formatBonuses(race.ability_bonuses)}
                 </p>
                 <p className="mt-0.5 text-xs text-gray-500">
                   Speed: {race.speed} ft
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-gray-400">
-                  {race.traits}
+                  {formatTraits(race.traits)}
                 </p>
               </button>
             );

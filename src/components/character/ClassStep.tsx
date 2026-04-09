@@ -176,11 +176,26 @@ export function ClassStep({ draft, onUpdate, onNext, onBack }: Props) {
         const supabase = createClient();
         const { data, error } = await supabase
           .from("ref_classes")
-          .select("id, name, hit_die, primary_abilities, flavor, complexity, archetype, skill_choices, skill_count")
+          .select("id, name, hit_die, primary_abilities, flavor_text, archetype, skill_choices")
           .order("name");
 
         if (!cancelled && data && data.length > 0 && !error) {
-          setClasses(data as ClassData[]);
+          // Normalize DB data to match the ClassData interface
+          const normalized = data.map((c: Record<string, unknown>) => {
+            const skillChoices = c.skill_choices as { count?: number; from?: string[] } | null;
+            return {
+              id: c.id as string,
+              name: c.name as string,
+              hit_die: c.hit_die as number,
+              primary_abilities: Array.isArray(c.primary_abilities) ? (c.primary_abilities as string[]).map((a: string) => a.toUpperCase()).join(", ") : String(c.primary_abilities || ""),
+              flavor: String(c.flavor_text || ""),
+              complexity: 2,
+              archetype: c.archetype as string || "martial",
+              skill_choices: Array.isArray(skillChoices?.from) ? skillChoices.from.map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)) : [],
+              skill_count: skillChoices?.count || 2,
+            } as ClassData;
+          });
+          setClasses(normalized);
         }
       } catch {
         // Keep static fallback
