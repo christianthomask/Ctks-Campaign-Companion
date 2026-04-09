@@ -19,12 +19,11 @@ export default async function Home() {
         .single();
 
       if (!profile) {
-        // Create profile — first user = DM
-        const { count } = await supabase
-          .from("profiles")
-          .select("*", { count: "exact", head: true });
+        // Use RPC function to count profiles (bypasses RLS)
+        const { data: countResult } = await supabase.rpc("get_profile_count");
+        const profileCount = typeof countResult === "number" ? countResult : 0;
 
-        const role = (count ?? 0) === 0 ? "dm" : "player";
+        const role = profileCount === 0 ? "dm" : "player";
 
         await supabase.from("profiles").insert({
           id: user.id,
