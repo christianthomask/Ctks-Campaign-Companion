@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { SessionViewer } from "@/components/session/SessionViewer";
 import type { SessionContent } from "@/lib/types/session";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ id: string }>;
 }
@@ -13,7 +15,7 @@ export default async function SessionPage({ params }: Props) {
 
   const { data: session } = await supabase
     .from("sessions")
-    .select("id, title, subtitle, session_number, content")
+    .select("id, title, subtitle, session_number, content, current_version")
     .eq("id", id)
     .single();
 
@@ -27,6 +29,7 @@ export default async function SessionPage({ params }: Props) {
       content={session.content as unknown as SessionContent}
       title={session.title}
       subtitle={session.subtitle}
+      currentVersion={(session as Record<string, unknown>).current_version as number | undefined}
     />
   );
 }

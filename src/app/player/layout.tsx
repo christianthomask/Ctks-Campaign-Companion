@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-export default async function DmLayout({
+export default async function PlayerLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -15,22 +15,6 @@ export default async function DmLayout({
 
   if (!user) {
     redirect("/auth/login");
-  }
-
-  // Ensure profile exists
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile) {
-    // Profile doesn't exist yet — redirect to home to create it
-    redirect("/");
-  }
-
-  if (profile.role !== "dm") {
-    redirect("/");
   }
 
   return <>{children}</>;

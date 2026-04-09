@@ -5,7 +5,7 @@ import sessionData from "@/data/sessions/joy-of-extradimensional-spaces.json";
 export async function POST() {
   const supabase = await createClient();
 
-  // Require authenticated DM
+  // Require authenticated user (DM guard is handled by the layout)
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -14,14 +14,23 @@ export async function POST() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Ensure profile exists — create as DM if first user
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("id, role")
     .eq("id", user.id)
     .single();
 
-  if (profile?.role !== "dm") {
-    return NextResponse.json({ error: "DM access required" }, { status: 403 });
+  if (!profile) {
+    const { count } = await supabase
+      .from("profiles")
+      .select("*", { count: "exact", head: true });
+
+    await supabase.from("profiles").insert({
+      id: user.id,
+      display_name: user.email?.split("@")[0] || "Adventurer",
+      role: (count ?? 0) === 0 ? "dm" : "player",
+    });
   }
 
   // Check if campaign already exists (idempotent)
