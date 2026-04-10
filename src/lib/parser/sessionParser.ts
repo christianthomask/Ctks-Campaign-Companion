@@ -18,6 +18,7 @@ import type {
   SettingDetails,
   QuickReference,
   SessionMeta,
+  MusicCue,
 } from "@/lib/types/session";
 
 // ---------------------------------------------------------------------------
@@ -288,6 +289,35 @@ function parsePuzzleBookCallout(
     discovery: kv["Discovery"] || "",
     illustration: kv["Illustration"] || "",
   };
+}
+
+/** Parse a music callout into a MusicCue */
+function parseMusicCallout(label: string, lines: string[]): MusicCue {
+  let videoIds: string[] = [];
+  let loop = true;
+  let volume = 30;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    const kvMatch = trimmed.match(/^(\w+):\s*(.*)/);
+    if (kvMatch) {
+      const key = kvMatch[1].toLowerCase();
+      const val = kvMatch[2].trim();
+      switch (key) {
+        case "id":
+          videoIds = val.split(",").map((v) => v.trim()).filter(Boolean);
+          break;
+        case "loop":
+          loop = val.toLowerCase() !== "false";
+          break;
+        case "volume":
+          volume = parseInt(val, 10) || 30;
+          break;
+      }
+    }
+  }
+
+  return { label, videoIds, loop, volume };
 }
 
 /** Parse a setting callout into SettingDetails */
@@ -832,6 +862,15 @@ export function parseSessionMarkdown(markdown: string): SessionContent {
         case "npc": {
           const npc = parseNpcCallout(calloutTitle, lines);
           allNpcs.push(npc);
+          break;
+        }
+
+        case "music": {
+          const musicCue = parseMusicCallout(calloutTitle, lines);
+          if (currentSection) {
+            if (!currentSection.music_cues) currentSection.music_cues = [];
+            currentSection.music_cues.push(musicCue);
+          }
           break;
         }
 

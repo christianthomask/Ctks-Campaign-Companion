@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { QuickReference as QuickReferenceType, PuzzleEntry } from "@/lib/types/session";
+import type { QuickReference as QuickReferenceType, PuzzleEntry, MusicCue } from "@/lib/types/session";
 import { NpcTable } from "./NpcTable";
 import { TreasureTable } from "./TreasureTable";
 import { PuzzleTracker } from "./PuzzleTracker";
+import { MusicCueButton } from "./MusicCueButton";
 import { createClient } from "@/lib/supabase/client";
 
 interface StagedHandout {
@@ -19,9 +20,10 @@ interface Props {
   onTogglePuzzle: (letter: string) => void;
   onClose: () => void;
   sessionId?: string;
+  musicCues?: MusicCue[];
 }
 
-const TABS = ["NPCs", "Puzzles", "Treasure", "Map", "Reveals"] as const;
+const TABS = ["NPCs", "Puzzles", "Treasure", "Setting", "Map", "Music", "Reveals"] as const;
 type Tab = (typeof TABS)[number];
 
 export function QuickReference({
@@ -30,6 +32,7 @@ export function QuickReference({
   onTogglePuzzle,
   onClose,
   sessionId,
+  musicCues,
 }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>("NPCs");
   const [stagedHandouts, setStagedHandouts] = useState<StagedHandout[]>([]);
@@ -137,6 +140,41 @@ export function QuickReference({
 
           {activeTab === "Treasure" && (
             <TreasureTable treasure={quickRef.treasure_summary} />
+          )}
+
+          {activeTab === "Setting" && (
+            <div className="space-y-2">
+              {Object.entries(quickRef.setting || {}).map(([key, value]) => {
+                if (!value) return null;
+                return (
+                  <div key={key} className="flex gap-3 rounded-lg bg-gray-800 p-2.5">
+                    <span className="min-w-[80px] text-xs font-semibold capitalize text-gray-400">
+                      {key}
+                    </span>
+                    <span className="text-sm text-gray-200">{String(value)}</span>
+                  </div>
+                );
+              })}
+              {(!quickRef.setting || Object.keys(quickRef.setting).length === 0) && (
+                <p className="py-4 text-center text-sm text-gray-500">No setting details available.</p>
+              )}
+            </div>
+          )}
+
+          {activeTab === "Music" && (
+            <div>
+              {musicCues && musicCues.length > 0 ? (
+                <div className="space-y-1">
+                  {musicCues.map((cue, i) => (
+                    <MusicCueButton key={`${cue.label}-${i}`} cue={cue} />
+                  ))}
+                </div>
+              ) : (
+                <div className="py-8 text-center text-gray-500">
+                  <p>No music cues in this session.</p>
+                </div>
+              )}
+            </div>
           )}
 
           {activeTab === "Map" && (

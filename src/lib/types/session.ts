@@ -77,6 +77,7 @@ export interface Section {
   puzzle_book?: PuzzleBookEntry | null;
   lethality_warning?: string;
   connections?: string[];
+  music_cues?: MusicCue[];
 }
 
 export interface DmNote {
@@ -163,4 +164,11 @@ export interface LoreThread {
   thread: string;
   clue: string;
   future: string;
+}
+
+export interface MusicCue {
+  label: string;
+  videoIds: string[];
+  loop: boolean;
+  volume: number;
 }

@@ -5,6 +5,7 @@ import { DmNoteBlock } from "./DmNote";
 import { StatBlockCard } from "./StatBlock";
 import { LethalityWarning } from "./LethalityWarning";
 import { PuzzleTracker } from "./PuzzleTracker";
+import { MusicCueButton } from "./MusicCueButton";
 
 interface Props {
   section: Section;
@@ -38,6 +39,15 @@ export const RoomBlock = memo(function RoomBlock({
             >
               {tag}
             </span>
+          ))}
+        </div>
+      )}
+
+      {/* Music cues */}
+      {section.music_cues && section.music_cues.length > 0 && (
+        <div className="mb-3">
+          {section.music_cues.map((cue, i) => (
+            <MusicCueButton key={`${cue.label}-${i}`} cue={cue} />
           ))}
         </div>
       )}

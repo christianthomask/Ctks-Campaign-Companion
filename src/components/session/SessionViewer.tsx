@@ -6,6 +6,8 @@ import { RoomBlock } from "./RoomBlock";
 import { SearchOverlay } from "./SearchOverlay";
 import { QuickReference } from "./QuickReference";
 import { VersionHistory } from "./VersionHistory";
+import { MusicProvider, useMusic } from "./MusicPlayer";
+import { MusicMiniPlayer } from "./MusicMiniPlayer";
 import { useSessionState } from "@/hooks/useSessionState";
 
 interface Props {
@@ -16,17 +18,42 @@ interface Props {
   currentVersion?: number;
 }
 
-export function SessionViewer({ sessionId, content, title, subtitle, currentVersion = 1 }: Props) {
+export function SessionViewer(props: Props) {
+  return (
+    <MusicProvider>
+      <SessionViewerInner {...props} />
+    </MusicProvider>
+  );
+}
+
+/** Inner component that can access MusicContext */
+function SessionViewerInner({ sessionId, content, title, subtitle, currentVersion = 1 }: Props) {
   const [showSearch, setShowSearch] = useState(false);
   const [showQuickRef, setShowQuickRef] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [showMobileToc, setShowMobileToc] = useState(false);
   const [viewingContent, setViewingContent] = useState<SessionContent | null>(null);
   const mainRef = useRef<HTMLDivElement>(null);
   const { puzzleEntries, togglePuzzle } = useSessionState(sessionId);
+  const { setAllCues } = useMusic();
 
   // The content to actually render — either an old version preview or the live content
   const activeContent = viewingContent ?? content;
+
+  // Collect all music cues from all sections
+  const allMusicCues = useMemo(
+    () =>
+      activeContent.acts.flatMap((a) =>
+        a.sections.flatMap((s) => s.music_cues || [])
+      ),
+    [activeContent.acts]
+  );
+
+  // Sync music cues with the MusicContext
+  useEffect(() => {
+    setAllCues(allMusicCues);
+  }, [allMusicCues, setAllCues]);
 
   // Keyboard shortcut for search
   useEffect(() => {
@@ -75,12 +102,19 @@ export function SessionViewer({ sessionId, content, title, subtitle, currentVers
     <div className="relative min-h-screen" ref={mainRef}>
       {/* Fixed top bar */}
       <header className="sticky top-0 z-30 flex items-center justify-between border-b border-gray-800 bg-gray-950/95 px-4 py-3 backdrop-blur-sm">
-        <div className="min-w-0 flex-1">
+        <button
+          className="min-w-0 flex-1 text-left md:cursor-default"
+          onClick={() => setShowMobileToc(true)}
+          title="Tap for table of contents"
+        >
           <h1 className="truncate text-lg font-bold text-amber-400">{title}</h1>
           {subtitle && (
-            <p className="truncate text-xs text-gray-400">{subtitle}</p>
+            <p className="truncate text-xs text-gray-400">
+              {subtitle}
+              <span className="ml-1 text-gray-600 md:hidden">&#x25BC;</span>
+            </p>
           )}
-        </div>
+        </button>
         <div className="flex items-center gap-2 pl-3">
           <button
             onClick={() => setShowSearch(true)}
@@ -280,7 +314,10 @@ export function SessionViewer({ sessionId, content, title, subtitle, currentVers
         </main>
       </div>
 
-      {/* Back to top FAB */}
+      {/* Music mini player */}
+      <MusicMiniPlayer />
+
+      {/* Back to top FAB — shifted up when mini player is visible */}
       {showBackToTop && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -309,7 +346,46 @@ export function SessionViewer({ sessionId, content, title, subtitle, currentVers
           puzzleEntries={puzzleEntries}
           onTogglePuzzle={togglePuzzle}
           onClose={() => setShowQuickRef(false)}
+          musicCues={allMusicCues}
         />
+      )}
+
+      {/* Mobile TOC drawer */}
+      {showMobileToc && (
+        <>
+          <div className="fixed inset-0 z-40 bg-black/50 md:hidden" onClick={() => setShowMobileToc(false)} />
+          <div className="fixed inset-x-0 bottom-0 z-50 max-h-[75vh] overflow-y-auto rounded-t-2xl border-t border-gray-700 bg-gray-900 p-4 md:hidden">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-sm font-semibold text-amber-400">Table of Contents</h2>
+              <button onClick={() => setShowMobileToc(false)} className="text-gray-400 hover:text-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
+                  <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                </svg>
+              </button>
+            </div>
+            {toc.map((act) => (
+              <div key={act.id} className="mb-3">
+                <button
+                  onClick={() => { scrollToSection(act.id); setShowMobileToc(false); }}
+                  className="mb-1 text-left text-sm font-semibold text-amber-400/80 hover:text-amber-400"
+                >
+                  {act.title}
+                </button>
+                <div className="space-y-0.5 pl-3 border-l border-gray-800">
+                  {act.sections.map((section) => (
+                    <button
+                      key={section.id}
+                      onClick={() => { scrollToSection(section.id); setShowMobileToc(false); }}
+                      className="block w-full truncate text-left text-xs text-gray-400 py-1.5 hover:text-gray-200"
+                    >
+                      {section.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       {/* Version history panel */}
