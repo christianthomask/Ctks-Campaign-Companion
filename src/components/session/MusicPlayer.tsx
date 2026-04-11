@@ -275,6 +275,8 @@ export function MusicProvider({ children }: { children: ReactNode }) {
           sharing: false,
           download: false,
           callback: () => {
+            // Explicit play call — auto_play alone doesn't always work on mobile
+            scWidgetRef.current.play();
             scWidgetRef.current.setVolume(vol);
             setIsPlaying(true);
             setAudioUnlocked(true);
@@ -300,14 +302,11 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    // Fade out current track before starting new one
-    if (isPlaying && activeSourceRef.current) {
-      fadeOutActive(400, startNewTrack);
-    } else {
-      stopActivePlayer();
-      startNewTrack();
-    }
-  }, [apiReady, isPlaying]);
+    // On mobile, we must start the new track synchronously in the user gesture
+    // call stack. Fading out async breaks autoplay. So: stop immediately, start new.
+    stopActivePlayer();
+    startNewTrack();
+  }, [apiReady]);
 
   const pause = useCallback(() => {
     if (activeSourceRef.current === "youtube") ytPlayerRef.current?.pauseVideo();
