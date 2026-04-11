@@ -293,6 +293,8 @@ function parsePuzzleBookCallout(
 
 /** Parse a music callout into a MusicCue */
 function parseMusicCallout(label: string, lines: string[]): MusicCue {
+  let source: "soundcloud" | "youtube" = "soundcloud";
+  let urls: string[] = [];
   let videoIds: string[] = [];
   let loop = true;
   let volume = 30;
@@ -304,8 +306,16 @@ function parseMusicCallout(label: string, lines: string[]): MusicCue {
       const key = kvMatch[1].toLowerCase();
       const val = kvMatch[2].trim();
       switch (key) {
+        case "source":
+          source = val.toLowerCase() === "youtube" ? "youtube" : "soundcloud";
+          break;
+        case "url":
+          urls = val.split(",").map((v) => v.trim()).filter(Boolean);
+          break;
         case "id":
           videoIds = val.split(",").map((v) => v.trim()).filter(Boolean);
+          // If we have video IDs but no explicit source, it's YouTube
+          if (urls.length === 0) source = "youtube";
           break;
         case "loop":
           loop = val.toLowerCase() !== "false";
@@ -317,7 +327,7 @@ function parseMusicCallout(label: string, lines: string[]): MusicCue {
     }
   }
 
-  return { label, videoIds, loop, volume };
+  return { label, source, urls, videoIds, loop, volume };
 }
 
 /** Parse a setting callout into SettingDetails */

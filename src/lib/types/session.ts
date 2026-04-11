@@ -168,7 +168,9 @@ export interface LoreThread {
 
 export interface MusicCue {
   label: string;
-  videoIds: string[];
+  source: "soundcloud" | "youtube";
+  urls: string[];       // SoundCloud track URLs
+  videoIds: string[];   // YouTube video IDs (legacy)
   loop: boolean;
   volume: number;
 }
