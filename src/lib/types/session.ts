@@ -78,6 +78,7 @@ export interface Section {
   lethality_warning?: string;
   connections?: string[];
   music_cues?: MusicCue[];
+  preformatted?: PreformattedBlock[];
 }
 
 export interface DmNote {
@@ -152,7 +153,17 @@ export interface PuzzleBookEntry {
 export interface Appendix {
   id: string;
   title: string;
-  content: WhimsyEntry[] | LoreThread[];
+  content: WhimsyEntry[] | LoreThread[] | GenericTableEntry[];
+  headers?: string[];
+}
+
+export interface GenericTableEntry {
+  [key: string]: string;
+}
+
+export interface PreformattedBlock {
+  content: string;
+  lang: string;
 }
 
 export interface WhimsyEntry {

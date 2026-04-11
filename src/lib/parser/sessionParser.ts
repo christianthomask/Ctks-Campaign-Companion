@@ -106,8 +106,10 @@ function tokenize(body: string): Token[] {
 
       if (lang === "stat-block") {
         tokens.push({ type: "stat-block", lines: blockLines });
+      } else {
+        // Preformatted content (ASCII maps, diagrams, code)
+        tokens.push({ type: "body", subtype: "preformatted", lines: blockLines, title: lang || "text" });
       }
-      // Other fenced blocks are ignored for now
       continue;
     }
 
@@ -762,28 +764,23 @@ export function parseSessionMarkdown(markdown: string): SessionContent {
       if (token.type === "table") {
         const { headers, rows } = parseTable(token.lines);
         // Determine if this is a WhimsyEntry table or LoreThread table
+        // Match dice columns more broadly: d4, d6, d8, d10, d12, d20, d100, roll
         const hasRoll = headers.some(
-          (h) => h.toLowerCase() === "d6" || h.toLowerCase() === "roll"
+          (h) => /^d\d+$/i.test(h) || h.toLowerCase() === "roll"
         );
         const hasThread = headers.some(
           (h) => h.toLowerCase() === "thread"
         );
 
         if (hasRoll) {
-          const entries = rows.map((row) => ({
-            roll: parseInt(
-              row["d6"] || row["D6"] || row["Roll"] || row["roll"] || "0",
-              10
-            ),
-            description:
-              row["Extradimensional Whimsy"] ||
-              row["Description"] ||
-              row["description"] ||
-              row["Effect"] ||
-              row["effect"] ||
-              Object.values(row).find((_, idx) => idx === 1) ||
-              "",
-          }));
+          // WhimsyEntry — take first column as roll, second as description
+          const entries = rows.map((row) => {
+            const vals = Object.values(row);
+            return {
+              roll: parseInt(vals[0] || "0", 10),
+              description: vals[1] || "",
+            };
+          });
           currentAppendix.content = entries;
         } else if (hasThread) {
           const entries = rows.map((row) => ({
@@ -800,6 +797,10 @@ export function parseSessionMarkdown(markdown: string): SessionContent {
               "",
           }));
           currentAppendix.content = entries;
+        } else {
+          // Generic table fallback — preserve all columns as-is
+          currentAppendix.content = rows.map((row) => ({ ...row }));
+          currentAppendix.headers = headers;
         }
       }
       continue;
@@ -949,6 +950,18 @@ export function parseSessionMarkdown(markdown: string): SessionContent {
 
     // --- Body text tokens ---
     if (token.type === "body") {
+      // Handle preformatted blocks (ASCII maps, diagrams)
+      if (token.subtype === "preformatted") {
+        if (currentSection) {
+          if (!currentSection.preformatted) currentSection.preformatted = [];
+          currentSection.preformatted.push({
+            content: token.lines.join("\n"),
+            lang: token.title || "text",
+          });
+        }
+        continue;
+      }
+
       const text = token.lines.join("\n").trim();
       if (!text) continue;
 

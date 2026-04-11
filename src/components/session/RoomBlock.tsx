@@ -65,6 +65,18 @@ export const RoomBlock = memo(function RoomBlock({
         {section.description}
       </p>
 
+      {/* Preformatted content (ASCII maps, diagrams) */}
+      {section.preformatted?.map((block, i) => (
+        <div
+          key={`pre-${i}`}
+          className="my-4 overflow-x-auto rounded-lg border border-gray-700 bg-gray-900 p-4"
+        >
+          <pre className="whitespace-pre text-xs leading-relaxed text-gray-300 font-mono">
+            {block.content}
+          </pre>
+        </div>
+      ))}
+
       {/* DM notes */}
       {section.dm_notes?.map((note, i) => (
         <DmNoteBlock key={`${note.type}-${i}`} note={note} />
