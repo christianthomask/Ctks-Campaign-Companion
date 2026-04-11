@@ -247,7 +247,13 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       setCurrentTrack(cue);
       setVolumeState(vol);
 
-      if (cue.source === "soundcloud" && cue.urls.length > 0 && scWidgetRef.current) {
+      if (cue.source === "soundcloud" && cue.urls.length > 0) {
+        // Ensure widget is initialized
+        if (!scWidgetRef.current && window.SC?.Widget) {
+          const iframe = document.getElementById("sc-widget") as HTMLIFrameElement;
+          if (iframe) scWidgetRef.current = window.SC.Widget(iframe);
+        }
+        if (!scWidgetRef.current) return;
         // Stop YouTube if it was playing
         if (activeSourceRef.current === "youtube") {
           ytPlayerRef.current?.stopVideo();
@@ -377,10 +383,10 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       {/* Hidden SoundCloud widget */}
       <iframe
         id="sc-widget"
-        src="https://w.soundcloud.com/player/?url=https://soundcloud.com/"
+        src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F0&auto_play=false"
         width="0"
         height="0"
-        allow="autoplay"
+        allow="autoplay; encrypted-media"
         style={{ display: "none" }}
       />
     </MusicContext.Provider>
