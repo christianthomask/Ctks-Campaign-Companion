@@ -140,7 +140,7 @@ function renderEntries(entries: unknown[] | undefined): string {
 // ─── Races ─────────────────────────────────────────────────────────
 
 async function ingestRaces() {
-  console.log("\n📖 Ingesting races...");
+  console.log("\n📖 Ingesting species (from races.json)...");
   const data = (await fetchJson(`${BASE_URL}/races.json`)) as {
     race: Array<Record<string, unknown>>;
   };
@@ -150,7 +150,7 @@ async function ingestRaces() {
   for (const race of data.race || []) {
     const source = String(race.source || "");
     // Only ingest PHB, basic rules, and common sources
-    if (!["PHB", "MPMM", "XGE", "VGM", "TCE"].includes(source)) continue;
+    if (!["XPHB", "FreeRules2024"].includes(source)) continue;
 
     const id = slugify(String(race.name));
     const abilityBonuses: Record<string, number> = {};
@@ -208,7 +208,8 @@ async function ingestRaces() {
       name: String(race.name),
       source,
       parent_race_id: null,
-      ability_bonuses: abilityBonuses,
+      ability_bonuses: {}, // 2024 rules: species don't grant ability score bonuses
+      creature_type: String(Array.isArray(race.creatureTypes) ? race.creatureTypes[0] : "Humanoid"),
       size: Array.isArray(race.size) ? race.size[0] : String(race.size || "M"),
       speed,
       darkvision,
@@ -218,8 +219,8 @@ async function ingestRaces() {
     });
   }
 
-  const count = await upsertBatch("ref_races", rows);
-  console.log(`  ✅ ${count} races ingested`);
+  const count = await upsertBatch("ref_species", rows);
+  console.log(`  ✅ ${count} species ingested`);
 }
 
 // ─── Classes ───────────────────────────────────────────────────────
@@ -259,7 +260,7 @@ async function ingestClasses() {
         subclass?: Array<Record<string, unknown>>;
       };
       const classes = fileData.class || [];
-      const phbClass = classes.find((c) => c.source === "PHB") || classes[0];
+      const phbClass = classes.find((c) => ["XPHB", "FreeRules2024"].includes(String(c.source))) || classes.find((c) => c.source === "PHB") || classes[0];
       if (!phbClass) continue;
       classData = phbClass;
     } catch {
@@ -421,6 +422,37 @@ async function ingestBackgrounds() {
       }
     }
 
+    // 2024: Parse ability score options and origin feat
+    const abilityScoreOptions: string[] = [];
+    if (Array.isArray(bg.ability)) {
+      for (const ab of bg.ability) {
+        if (typeof ab === "object" && ab !== null) {
+          for (const key of Object.keys(ab as Record<string, unknown>)) {
+            if (key !== "choose" && !abilityScoreOptions.includes(key)) {
+              abilityScoreOptions.push(key);
+            }
+          }
+          const choose = (ab as Record<string, unknown>).choose;
+          if (choose && typeof choose === "object") {
+            const from = (choose as Record<string, unknown>).from as string[] | undefined;
+            if (Array.isArray(from)) {
+              for (const a of from) {
+                if (!abilityScoreOptions.includes(a)) abilityScoreOptions.push(a);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Try to find origin feat
+    let originFeat = "";
+    if (Array.isArray(bg.startingFeats)) {
+      const feat = bg.startingFeats[0];
+      if (typeof feat === "string") originFeat = feat;
+      else if (feat && typeof feat === "object") originFeat = String((feat as Record<string, unknown>).feat || (feat as Record<string, unknown>).name || "");
+    }
+
     rows.push({
       id,
       name: String(bg.name),
@@ -437,6 +469,8 @@ async function ingestBackgrounds() {
       flaws: [],
       flavor_text:
         renderEntries(bg.entries as unknown[])?.slice(0, 500) || null,
+      ability_score_options: abilityScoreOptions.length > 0 ? abilityScoreOptions : null,
+      origin_feat: originFeat || null,
     });
   }
 
@@ -456,7 +490,8 @@ async function ingestSpells() {
   const allSpells: Record<string, unknown>[] = [];
 
   // Only ingest from core sources
-  const targetFiles = ["spells-phb.json", "spells-xge.json", "spells-tce.json"];
+  // Try XPHB-specific file first, fall back to PHB file (XPHB spells may be in either)
+  const targetFiles = ["spells-xphb.json", "spells-phb.json"];
 
   for (const [, fileName] of Object.entries(index)) {
     if (!targetFiles.includes(fileName)) continue;
@@ -487,7 +522,7 @@ async function ingestSpells() {
           if (Array.isArray(classData.fromClassList)) {
             for (const c of classData.fromClassList) {
               const cn = c as Record<string, unknown>;
-              if (cn.source === "PHB") {
+              if (["PHB", "XPHB", "FreeRules2024"].includes(String(cn.source))) {
                 classes.push(String(cn.name).toLowerCase());
               }
             }
@@ -598,7 +633,7 @@ async function ingestItems() {
 
       for (const item of items) {
         const source = String(item.source || "");
-        if (!["PHB", "DMG"].includes(source)) continue;
+        if (!["XPHB", "XDMG", "FreeRules2024"].includes(source)) continue;
 
         const id = slugify(String(item.name));
 
@@ -711,18 +746,102 @@ async function ingestConditions() {
   console.log(`  ✅ ${count} conditions ingested`);
 }
 
+// ─── Feats (NEW for 2024) ──────────────────────────────────────────
+
+async function ingestFeats() {
+  console.log("\n🏅 Ingesting feats...");
+  const data = (await fetchJson(`${BASE_URL}/feats.json`)) as {
+    feat: Array<Record<string, unknown>>;
+  };
+
+  const rows: Record<string, unknown>[] = [];
+
+  for (const feat of data.feat || []) {
+    const source = String(feat.source || "");
+    if (!["XPHB", "FreeRules2024"].includes(source)) continue;
+
+    const id = slugify(String(feat.name));
+
+    // Determine category
+    let category = "General";
+    if (feat.category) {
+      category = String(feat.category);
+    }
+
+    // Level requirement
+    let levelReq: number | null = null;
+    if (feat.prerequisite && Array.isArray(feat.prerequisite)) {
+      for (const prereq of feat.prerequisite) {
+        if (typeof prereq === "object" && prereq !== null) {
+          const p = prereq as Record<string, unknown>;
+          if (p.level != null) levelReq = Number(p.level);
+        }
+      }
+    }
+
+    // Prerequisite text
+    let prerequisiteText = "";
+    if (feat.prerequisite && Array.isArray(feat.prerequisite)) {
+      prerequisiteText = feat.prerequisite
+        .map((p: unknown) => {
+          if (typeof p === "string") return p;
+          if (typeof p === "object" && p !== null) {
+            const obj = p as Record<string, unknown>;
+            if (obj.level) return `Level ${obj.level}`;
+            if (obj.ability) return JSON.stringify(obj.ability);
+            return "";
+          }
+          return "";
+        })
+        .filter(Boolean)
+        .join(", ");
+    }
+
+    // Ability score options
+    const abilityOpts: string[] = [];
+    if (feat.ability && Array.isArray(feat.ability)) {
+      for (const ab of feat.ability) {
+        if (typeof ab === "object" && ab !== null) {
+          for (const key of Object.keys(ab as Record<string, unknown>)) {
+            if (key !== "choose" && !abilityOpts.includes(key)) {
+              abilityOpts.push(key);
+            }
+          }
+        }
+      }
+    }
+
+    rows.push({
+      id,
+      name: String(feat.name),
+      source,
+      category,
+      level_requirement: levelReq,
+      prerequisite: prerequisiteText || null,
+      description: renderEntries(feat.entries as unknown[])?.slice(0, 2000) || "",
+      repeatable: Boolean(feat.repeatable),
+      ability_score_options: abilityOpts.length > 0 ? abilityOpts : null,
+    });
+  }
+
+  const count = await upsertBatch("ref_feats", rows);
+  console.log(`  ✅ ${count} feats ingested`);
+}
+
 // ─── Main ──────────────────────────────────────────────────────────
 
 async function main() {
-  console.log("🎲 5e.tools Data Ingestion");
+  console.log("🎲 5e.tools Data Ingestion (2024 Rules / XPHB)");
   console.log("=".repeat(50));
   console.log(`Supabase URL: ${SUPABASE_URL}`);
+  console.log("Sources: XPHB, XDMG, FreeRules2024");
   console.log("");
 
   try {
-    await ingestRaces();
+    await ingestRaces();  // → ref_species
     await ingestClasses();
     await ingestBackgrounds();
+    await ingestFeats();   // NEW
     await ingestSpells();
     await ingestItems();
     await ingestConditions();

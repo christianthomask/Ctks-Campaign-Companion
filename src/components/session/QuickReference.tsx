@@ -1,19 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import type { QuickReference as QuickReferenceType, PuzzleEntry } from "@/lib/types/session";
+import { useState, useEffect } from "react";
+import type { QuickReference as QuickReferenceType, PuzzleEntry, MusicCue } from "@/lib/types/session";
 import { NpcTable } from "./NpcTable";
 import { TreasureTable } from "./TreasureTable";
 import { PuzzleTracker } from "./PuzzleTracker";
+import { MusicCueButton } from "./MusicCueButton";
+import { createClient } from "@/lib/supabase/client";
+
+interface StagedHandout {
+  id: string;
+  title: string;
+  category: string;
+}
 
 interface Props {
   quickRef: QuickReferenceType;
   puzzleEntries: PuzzleEntry[];
   onTogglePuzzle: (letter: string) => void;
   onClose: () => void;
+  sessionId?: string;
+  musicCues?: MusicCue[];
 }
 
-const TABS = ["NPCs", "Puzzles", "Treasure", "Map"] as const;
+const TABS = ["NPCs", "Puzzles", "Treasure", "Setting", "Map", "Music", "Reveals"] as const;
 type Tab = (typeof TABS)[number];
 
 export function QuickReference({
@@ -21,8 +31,55 @@ export function QuickReference({
   puzzleEntries,
   onTogglePuzzle,
   onClose,
+  sessionId,
+  musicCues,
 }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>("NPCs");
+  const [stagedHandouts, setStagedHandouts] = useState<StagedHandout[]>([]);
+  const [revealing, setRevealing] = useState<string | null>(null);
+
+  // Fetch staged handouts
+  useEffect(() => {
+    async function fetchStaged() {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: campaign } = await supabase
+        .from("campaigns")
+        .select("id")
+        .eq("dm_user_id", user.id)
+        .limit(1)
+        .single();
+
+      if (!campaign) return;
+
+      let query = supabase
+        .from("handouts")
+        .select("id, title, category")
+        .eq("campaign_id", campaign.id)
+        .eq("stage", "staged");
+
+      if (sessionId) {
+        query = query.eq("session_id", sessionId);
+      }
+
+      const { data } = await query;
+      if (data) setStagedHandouts(data as StagedHandout[]);
+    }
+    fetchStaged();
+  }, [sessionId]);
+
+  async function revealHandout(id: string) {
+    setRevealing(id);
+    const supabase = createClient();
+    await supabase
+      .from("handouts")
+      .update({ stage: "published", published_at: new Date().toISOString() })
+      .eq("id", id);
+    setStagedHandouts((prev) => prev.filter((h) => h.id !== id));
+    setRevealing(null);
+  }
 
   return (
     <>
@@ -85,11 +142,82 @@ export function QuickReference({
             <TreasureTable treasure={quickRef.treasure_summary} />
           )}
 
+          {activeTab === "Setting" && (
+            <div className="space-y-2">
+              {Object.entries(quickRef.setting || {}).map(([key, value]) => {
+                if (!value) return null;
+                return (
+                  <div key={key} className="flex gap-3 rounded-lg bg-gray-800 p-2.5">
+                    <span className="min-w-[80px] text-xs font-semibold capitalize text-gray-400">
+                      {key}
+                    </span>
+                    <span className="text-sm text-gray-200">{String(value)}</span>
+                  </div>
+                );
+              })}
+              {(!quickRef.setting || Object.keys(quickRef.setting).length === 0) && (
+                <p className="py-4 text-center text-sm text-gray-500">No setting details available.</p>
+              )}
+            </div>
+          )}
+
+          {activeTab === "Music" && (
+            <div>
+              {musicCues && musicCues.length > 0 ? (
+                <div className="space-y-1">
+                  {musicCues.map((cue, i) => (
+                    <MusicCueButton key={`${cue.label}-${i}`} cue={cue} />
+                  ))}
+                </div>
+              ) : (
+                <div className="py-8 text-center text-gray-500">
+                  <p>No music cues in this session.</p>
+                </div>
+              )}
+            </div>
+          )}
+
           {activeTab === "Map" && (
             <div className="overflow-x-auto rounded-lg border border-gray-700 bg-gray-800 p-3">
               <pre className="whitespace-pre text-xs leading-relaxed text-gray-300 font-mono">
                 {quickRef.exploration_flowchart}
               </pre>
+            </div>
+          )}
+
+          {activeTab === "Reveals" && (
+            <div>
+              {stagedHandouts.length > 0 ? (
+                <div className="space-y-2">
+                  <p className="mb-3 text-xs text-gray-500">
+                    Tap the lightning bolt to reveal a handout to all players instantly.
+                  </p>
+                  {stagedHandouts.map((h) => (
+                    <div
+                      key={h.id}
+                      className="flex items-center justify-between rounded-lg border border-gray-700 bg-gray-800 p-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-gray-100">{h.title}</p>
+                        <p className="text-xs text-gray-500">{h.category}</p>
+                      </div>
+                      <button
+                        onClick={() => revealHandout(h.id)}
+                        disabled={revealing === h.id}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-600 text-gray-950 transition-colors hover:bg-amber-500 disabled:opacity-50"
+                        title="Reveal to players"
+                      >
+                        {revealing === h.id ? "..." : "⚡"}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-8 text-center text-gray-500">
+                  <p>No staged handouts.</p>
+                  <p className="mt-1 text-xs">Stage handouts from the Handouts page to reveal them during play.</p>
+                </div>
+              )}
             </div>
           )}
         </div>

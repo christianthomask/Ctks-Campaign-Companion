@@ -8,7 +8,7 @@ import Link from "next/link";
 interface Character {
   id: string;
   name: string;
-  race_id: string | null;
+  species_id: string | null;
   class_id: string | null;
   level: number;
   str_base: number;
@@ -66,7 +66,7 @@ export default function CharacterSheetPage() {
         const computed = computeCharacterStats(
           {
             level: char.level,
-            race_id: char.race_id,
+            race_id: char.species_id,
             class_id: char.class_id,
             str_base: char.str_base,
             dex_base: char.dex_base,
@@ -138,7 +138,7 @@ export default function CharacterSheetPage() {
         <div className="mb-4">
           <h1 className="text-xl font-bold text-amber-400">{character.name}</h1>
           <p className="text-sm text-gray-400">
-            Level {character.level} {character.race_id} {character.class_id}
+            Level {character.level} {character.species_id} {character.class_id}
           </p>
         </div>
 
