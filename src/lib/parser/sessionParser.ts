@@ -297,7 +297,7 @@ function parseMusicCallout(label: string, lines: string[]): MusicCue {
   let urls: string[] = [];
   let videoIds: string[] = [];
   let loop = true;
-  let volume = 30;
+  let volume = 100;
 
   for (const line of lines) {
     const trimmed = line.trim();
@@ -321,7 +321,7 @@ function parseMusicCallout(label: string, lines: string[]): MusicCue {
           loop = val.toLowerCase() !== "false";
           break;
         case "volume":
-          volume = parseInt(val, 10) || 30;
+          volume = parseInt(val, 10) || 100;
           break;
       }
     }

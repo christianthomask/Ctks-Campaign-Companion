@@ -103,7 +103,7 @@ interface SCSlot {
 export function MusicProvider({ children }: { children: ReactNode }) {
   const [currentTrack, setCurrentTrack] = useState<MusicCue | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolumeState] = useState(30);
+  const [volume, setVolumeState] = useState(100);
   const [allCues, setAllCues] = useState<MusicCue[]>([]);
   const [audioUnlocked, setAudioUnlocked] = useState(false);
   const [apiReady, setApiReady] = useState(false);
@@ -251,7 +251,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     if (!apiReady) return;
     if (fadeIntervalRef.current) { clearInterval(fadeIntervalRef.current); fadeIntervalRef.current = null; }
 
-    const vol = cue.volume ?? 30;
+    const vol = cue.volume ?? 100;
     setCurrentTrack(cue);
     setVolumeState(vol);
 
