@@ -264,14 +264,36 @@ function SessionViewerInner({ sessionId, content, title, subtitle, currentVersio
                       <h3 className="mb-4 text-base font-semibold text-gray-100">
                         {appendix.title}
                       </h3>
-                      {"roll" in (appendix.content[0] || {}) ? (
-                        // Whimsy table
+                      {appendix.headers && appendix.headers.length > 0 ? (
+                        // Generic table (fallback for any table format)
                         <div className="overflow-x-auto rounded-lg border border-gray-700 bg-gray-800">
                           <table className="w-full text-sm">
                             <thead>
                               <tr className="border-b border-gray-700">
-                                <th className="px-3 py-2 text-left font-medium text-gray-400 w-16">d10</th>
-                                <th className="px-3 py-2 text-left font-medium text-gray-400">Event</th>
+                                {appendix.headers.map((header) => (
+                                  <th key={header} className="px-3 py-2 text-left font-medium text-gray-400">{header}</th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-700/50">
+                              {(appendix.content as Record<string, string>[]).map((row, i) => (
+                                <tr key={i}>
+                                  {appendix.headers!.map((header) => (
+                                    <td key={header} className="px-3 py-2 text-gray-300">{row[header] || "—"}</td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : "roll" in (appendix.content[0] || {}) ? (
+                        // Whimsy/dice table
+                        <div className="overflow-x-auto rounded-lg border border-gray-700 bg-gray-800">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="border-b border-gray-700">
+                                <th className="px-3 py-2 text-left font-medium text-gray-400 w-16">Roll</th>
+                                <th className="px-3 py-2 text-left font-medium text-gray-400">Result</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-700/50">
@@ -284,7 +306,7 @@ function SessionViewerInner({ sessionId, content, title, subtitle, currentVersio
                             </tbody>
                           </table>
                         </div>
-                      ) : (
+                      ) : "thread" in (appendix.content[0] || {}) ? (
                         // Lore threads
                         <div className="space-y-3">
                           {(appendix.content as Array<{ thread: string; clue: string; future: string }>).map((entry) => (
@@ -304,7 +326,7 @@ function SessionViewerInner({ sessionId, content, title, subtitle, currentVersio
                             </div>
                           ))}
                         </div>
-                      )}
+                      ) : null}
                     </div>
                   ))}
                 </div>
