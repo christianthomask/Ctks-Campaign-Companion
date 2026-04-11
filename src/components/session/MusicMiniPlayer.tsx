@@ -32,9 +32,12 @@ export function MusicMiniPlayer() {
           </svg>
         </span>
 
-        {/* Track name */}
+        {/* Track name + source */}
         <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-200">
           {currentTrack.label}
+          <span className="ml-1.5 text-[10px] text-gray-500">
+            {currentTrack.source === "soundcloud" ? "SC" : "YT"}
+          </span>
         </span>
 
         {/* Play / Pause button */}
